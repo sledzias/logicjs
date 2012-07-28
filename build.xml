@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="logicjs" default="prod" basedir="/home/sledzias/WebstormProjects/logicjs">
+<project name="logicjs" default="prod" basedir="/Users/sledzias/Documents/logicjs">
 
     <description>Client-side ANT build file example</description>
 
