@@ -63,11 +63,15 @@
     <!--Concatenate JS files-->
     <target name="-js.concatenate" depends="-js.lint"
             description="Concatenates specified JavaScript files">
-        <concat destfile="${build.dir}/js/concat.js">
+        <concat destfile="${build.dir}/js/logic.js">
+            <filelist
+                    dir="${src.js.dir}"
+                    files="Logic.js, Gate.js, Anchor.js"/>
+
             <fileset
                     dir="${src.js.dir}"
                     includes="*.js"
-                    excludes="first.js, second.js"/>
+                    excludes="Logic.js, Gate.js, Anchor.js, basic.js"/>
         </concat>
         <echo>Finished</echo>
     </target>
@@ -99,7 +103,7 @@
         <apply executable="java" parallel="false" dest="${build.dir}/js">
             <fileset
                     dir="${build.dir}/js"
-                    includes="concat.js"/>
+                    includes="logic.js"/>
             <arg line="-jar"/>
             <arg path="${yui.dir}"/>
             <srcfile/>
