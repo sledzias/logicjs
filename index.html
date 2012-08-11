@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <title>logicjs test</title>
+
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">-->
+
+    <!--    <script type="text/css" src="bootstrap/css/bootstrap-responsive.css"></script>-->
+
+    <script type="text/javascript" src="libs/jquery-1.7.2.js"></script>
+    <!--   <script type="text/javascript" src="kinetic-v3.8.1.js"></script>    -->
+    <script type="text/javascript" src="libs/kinetic-v3.10.5.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="build/js/logic.js"></script>
+    <script type="text/javascript" src="libs/jquery-ui-1.8.20.custom.min.js"></script>
+    <!--<scripthttp://www.youtube.com/watch?v=F6ZfA5QZDHY type="text/javascript" src="jCanvaScript.js"></script>    -->
+
+
+
+    <style type="text/css">
+        .Gate, .Gate:hover {
+            width: 100px;
+            height: 50px;
+
+            padding: 0px;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .Gate[gate=and] {
+            background: url(img/gates/and.png) no-repeat ;
+        }
+
+        .Gate[gate=or] {
+            background: url(img/gates/or.png) no-repeat;
+        }
+
+        .Gate[gate=switch] {
+            background: url(img/gates/and.png) no-repeat;
+        }
+
+        .Gate[gate=bulb] {
+            background: url(img/gates/or.png) no-repeat;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+
+            <div class="Gate" gate="and"></div>
+            <div class="Gate" gate="or"></div>
+            <div class="Gate" gate="switch"></div>
+            <div class="Gate" gate="bulb"></div>
+
+            <label for="gridCheckbox">Pokaż/ukryj siatkę<input type="checkbox" id="gridCheckbox"></label>
+            <!--Sidebar content-->
+        </div>
+        <div class="span10" style="background-color: #f0f;">
+
+            <div id="container"
+                 style="background: #fff url('img/grid_10.png'); width: 100%; height: 600px; overflow: scroll; position: relative;">
+            </div>
+            <!--Body content-->
+        </div>
+    </div>
+</div>
+
+
+<!--       <canvas id="a"></canvas>-->
+</body>
+
+
+
+<script type="text/javascript">
+    var workflow = new logicjs.Workflow({
+        container:'container',
+        width: 1500,
+        height: 1000});
+    $(document).ready(function () {
+        $('.Gate').draggable({
+            helper:'clone',
+            zIndex:2
+        });
+        $('.Gate').click(function () {
+//                workflow.addGate();
+        });
+
+
+        $("#container").droppable({
+            drop:function (event, ui) {
+                var x = ui.offset.left - $(this).offset().left + $(this).scrollLeft();
+                var y = ui.offset.top - $(this).offset().top + $(this).scrollTop();
+
+                var gateType = ui.draggable.attr('gate');
+                console.log(ui.draggable.attr('gate'));
+                if (gateType == 'and') {
+                     workflow.addGate({x:x, y:y});
+                }
+//                    if (gateType == 'or') {
+//                        var orGate = new logicjs.Or(x, y);
+//                        console.log(orGate);
+//                        logicjs.workflow.addGate(orGate);
+//                    }
+//                    if (gateType == 'switch') {
+//
+//                        logicjs.workflow.addGate(new logicjs.Switch(x, y));
+//                    }
+//                    if (gateType == 'bulb') {
+//
+//                        logicjs.workflow.addGate(new logicjs.Bulb(x, y));
+//                    }
+
+
+            }
+        });
+    });
+
+
+</script>
+</html>

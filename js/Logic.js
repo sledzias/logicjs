@@ -1,6 +1,6 @@
 var logicjs = {};
 
-
+//zwraca obiekt z parametrami bez funkcji i obiektow z metodami
 logicjs._toJSON = function(node){
         var type = Kinetic.Type;
 

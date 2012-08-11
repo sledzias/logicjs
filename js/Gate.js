@@ -1,12 +1,5 @@
 logicjs.Gate =  Kinetic.Group.extend({
     init: function(config) {
-        this.setDefaultAttrs({
-            radius:5,
-            stroke:"black",
-            fill:"#ddd",
-            strokeWidth:2,
-            draggable:false
-        });
         this.oType = 'Gate';
         // call super constructor
         this._super(config);
@@ -16,7 +9,9 @@ logicjs.Gate =  Kinetic.Group.extend({
 //            y : 10
 //        }));
 
-
+        this.on('dragstart', function(){
+         this.moveToTop();
+        });
 
     },
 
