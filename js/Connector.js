@@ -11,48 +11,60 @@ logicjs.Connector =  Kinetic.Group.extend({
 
 
 
-        this.add(new logicjs.Anchor({
+        this.add(new logicjs.ConnectorAnchor({
             name:'anchor',
             x : that.getAttrs().points[0].x,
             y : that.getAttrs().points[0].y,
             draggable  : true
         }));
-        this.add(new logicjs.Anchor({
+        this.add(new logicjs.ConnectorAnchor({
             name:'anchor',
             x : that.getAttrs().points[that.getAttrs().points.length-1].x,
             y : that.getAttrs().points[that.getAttrs().points.length-1].y,
             draggable  : true
         }));
        // this.drawLine();
-        this.add(new Kinetic.Line({
+        this.line =new Kinetic.Line({
             name : 'line',
             points : that.getAttrs().points,
-            strokeWidth : 2,
+            strokeWidth : 4,
             stroke : 'black'
 
-        }));
-        this.on('dragmove', function(e){
+        });
+        this.drawLine();
+        this.add(this.line);
+        this.on('dragmove dragend', function(e){
            that.drawLine();
+            this.getLayer().draw();
+        });
+
+        this.on('dragend mouseout ', function(e){
+            this._getLine().saveImageData();
         });
 
         this._getLine().on('click', function(){
             console.log('line click!');
         });
+
+
     },
 
     drawLine : function(){
-        console.log(this);
-        var anchors = this.get('.anchor');
+    //    console.log(this);
+        var anchors = this._getAnchors();
         var points = [];
         for (var i=0; i<anchors.length; i++){
             points.push(anchors[i].getPosition());
         }
-        console.log(points);
-        var line  = this.get('.line')[0];
+       // console.log(points);
+        var line  = this.line;
         line.setPoints(points);
-        line.moveToBottom();
+        if (line.getParent() !== undefined){
+            line.moveToBottom();
+        }
+
         //line.saveImageData();
-        console.log(this.get('.line'));
+       // console.log(this.get('.line'));
        // this.get('.line').moveToBottom();
     },
 
@@ -64,10 +76,17 @@ logicjs.Connector =  Kinetic.Group.extend({
 
         }
         else{
+
             return _.filter(this.getChildren(),function(child){
                 return child.getName() == 'line'
             })[0];
         }
+    },
+
+    _getAnchors : function(){
+        return _.filter(this.getChildren(),function(child){
+                return child.getName() == 'anchor';
+        });
     },
 
 

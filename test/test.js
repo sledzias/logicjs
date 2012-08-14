@@ -50,3 +50,58 @@ test( "And: serializacja i deserializacja",4, function() {
     equal(  copyGate.get('.output').length,  1, "liczba wyjsc powinna byc rowna 1" );
 
 });
+
+module( "Logicjs Obsluga polaczen" ,{
+    setup: function() {
+        this.stage = new logicjs.Workflow({
+            container: "container",
+            width: 500,
+            height: 200
+        });
+
+    },
+    teardown: function() {
+
+    }
+});
+
+
+test( "Dodawanie polaczenia do bramki",6, function() {
+    var gateAnchor = new logicjs.GateAnchor({});
+    var connectorAnchor = new logicjs.ConnectorAnchor({});
+
+
+    ok(gateAnchor !== null, 'utworzono gateAnchor');
+    ok(connectorAnchor !== null, 'utworzono connectorAnchor');
+    equal(gateAnchor.getConnectors().length, 0, 'getConnector powinien byc rowny 0 dla niedodanych polaczen');
+    gateAnchor.connectTo(connectorAnchor);
+    equal(gateAnchor.getConnectors().length, 1, 'getConnector powinien byc rowny 1 dla dodanego polaczenia');
+    var tempAnchor = gateAnchor.getConnectors()[0];
+    deepEqual(connectorAnchor,tempAnchor,'zwrocony pin powinien byc taki sam jak dodany');
+    gateAnchor.connectTo(connectorAnchor);
+    equal(gateAnchor.getConnectors().length, 1, 'getConnector powinien byc rowny 1 dla dodania istniejacego polaczenia');
+
+});
+
+test( "Usuwanie polaczenia z bramki",4, function() {
+    var gateAnchor = new logicjs.GateAnchor({});
+    var connectorAnchor = new logicjs.ConnectorAnchor({});
+    gateAnchor.connectTo(connectorAnchor);
+    gateAnchor.disconnectFrom(connectorAnchor);
+
+
+    equal(gateAnchor.getConnectors().length, 0, 'getConnector powinien byc rowny 0 po usunieciu polaczenia');
+
+    gateAnchor.connectTo(new logicjs.ConnectorAnchor({}));
+    gateAnchor.connectTo(connectorAnchor);
+    var tempAnchor = new logicjs.ConnectorAnchor({})
+    gateAnchor.connectTo(tempAnchor);
+    gateAnchor.connectTo(new logicjs.ConnectorAnchor({}));
+    gateAnchor.disconnectFrom(connectorAnchor);
+    equal(gateAnchor.getConnectors().length, 3, 'getConnector powinien byc rowny 3 po dodaniu 4 i usunieciu 1 polaczenia');
+    ok(_.indexOf(gateAnchor.getConnectors(),connectorAnchor)==-1, 'getConnector nie powinien zawierac usunietego polaczenia');
+    ok(_.indexOf(gateAnchor.getConnectors(),tempAnchor)>-1, 'getConnector powinien zaiwerac nieusuniete polaczenie');
+
+});
+
+

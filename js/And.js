@@ -28,19 +28,22 @@ logicjs.And =  logicjs.Gate.extend({
             x : 0,
             y : 0
         }));
-        this.add(new logicjs.Anchor({
+       var  anchor = new logicjs.GateAnchor({
             name:'input',
             x : 0,
             y : 20
-        }));
+        });
+        this.add(anchor);
 
-        this.add(new logicjs.Anchor({
+
+
+        this.add(new logicjs.GateAnchor({
             name:'input',
             x : 0,
             y : 40
         }));
 
-        this.add(new logicjs.Anchor({
+        this.add(new logicjs.GateAnchor({
             name:'output',
             x : 60,
             y : 30

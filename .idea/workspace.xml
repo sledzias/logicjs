@@ -2,47 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="64a13455-c862-4d3d-ab47-8d43a649bb6f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/img/glyphicons-halflings-white.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/img/glyphicons-halflings.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_diagonals-thick_18_b81900_40x40.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_diagonals-thick_20_666666_40x40.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_flat_10_000000_40x100.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_glass_100_fdf5ce_1x400.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_gloss-wave_35_f6a828_500x100.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-bg_highlight-soft_75_ffe45c_1x100.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-icons_222222_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-icons_228ef1_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-icons_ef8c08_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-icons_ffd27a_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/images/ui-icons_ffffff_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/img/gates/and.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/img/gates/or.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/img/grid_10.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/css/bootstrap-responsive.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/css/bootstrap-responsive.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/css/bootstrap.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/css/bootstrap.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/js/bootstrap.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bootstrap/js/bootstrap.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/ui-lightness/jquery-ui-1.8.20.custom.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/Workflow.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/jquery-ui-1.8.20.custom.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/kinetic-v3.10.4.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libs/kinetic-v3.10.5.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/distribute-0.6.28.tar.gz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/ConnectorAnchor.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/GateAnchor.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/css/tstamp.txt" afterPath="$PROJECT_DIR$/build/css/tstamp.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/js/logic-min.js" afterPath="$PROJECT_DIR$/build/js/logic-min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/js/logic.js" afterPath="$PROJECT_DIR$/build/js/logic.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/js/tstamp.txt" afterPath="$PROJECT_DIR$/build/js/tstamp.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Anchor.js" afterPath="$PROJECT_DIR$/js/Anchor.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/And.js" afterPath="$PROJECT_DIR$/js/And.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Connector.js" afterPath="$PROJECT_DIR$/js/Connector.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Gate.js" afterPath="$PROJECT_DIR$/js/Gate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Logic.js" afterPath="$PROJECT_DIR$/js/Logic.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Workflow.js" afterPath="$PROJECT_DIR$/js/Workflow.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test.js" afterPath="$PROJECT_DIR$/test/test.js" />
     </list>
     <ignored path="logicjs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -64,10 +38,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file leaf-file-name="GateAnchor.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/GateAnchor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="17" selection-start="2838" selection-end="2838" vertical-scroll-proportion="-2.5316455">
+            <state line="39" column="0" selection-start="1078" selection-end="1078" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -76,25 +50,43 @@
       <file leaf-file-name="Workflow.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Workflow.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="338" selection-end="338" vertical-scroll-proportion="-3.5454545">
+            <state line="34" column="47" selection-start="933" selection-end="933" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="And.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/And.js">
+      <file leaf-file-name="test.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="12" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0">
+            <state line="99" column="47" selection-start="3614" selection-end="3614" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="basic.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/basic.js">
+      <file leaf-file-name="test.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="24" column="6" selection-start="715" selection-end="715" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConnectorAnchor.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/ConnectorAnchor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="57" column="34" selection-start="1671" selection-end="1671" vertical-scroll-proportion="0.59110475">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="kinetic-v3.10.5.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/libs/kinetic-v3.10.5.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2650" column="4" selection-start="78285" selection-end="78285" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,16 +95,16 @@
       <file leaf-file-name="Gate.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Gate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="20" selection-start="248" selection-end="248" vertical-scroll-proportion="0.0">
+            <state line="17" column="46" selection-start="507" selection-end="507" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Connector.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Connector.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Connector.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="11" selection-start="1147" selection-end="1147" vertical-scroll-proportion="0.5426357">
+            <state line="39" column="0" selection-start="1164" selection-end="1164" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -130,16 +122,7 @@
       <file leaf-file-name="Anchor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Anchor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="0" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qunit.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/qunit.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="20" column="50" selection-start="530" selection-end="530" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -161,15 +144,18 @@
         <option value="$PROJECT_DIR$/test/test.html" />
         <option value="$PROJECT_DIR$/build.htm" />
         <option value="$PROJECT_DIR$/build.xml" />
-        <option value="$PROJECT_DIR$/test/test.js" />
         <option value="$PROJECT_DIR$/build/css/tstamp.txt" />
         <option value="$PROJECT_DIR$/build/js/tstamp.txt" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/Gate.js" />
-        <option value="$PROJECT_DIR$/js/And.js" />
         <option value="$PROJECT_DIR$/js/Logic.js" />
-        <option value="$PROJECT_DIR$/js/Workflow.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/Anchor.js" />
         <option value="$PROJECT_DIR$/js/Connector.js" />
+        <option value="$PROJECT_DIR$/js/And.js" />
+        <option value="$PROJECT_DIR$/js/Gate.js" />
+        <option value="$PROJECT_DIR$/test/test.js" />
+        <option value="$PROJECT_DIR$/js/GateAnchor.js" />
+        <option value="$PROJECT_DIR$/js/Workflow.js" />
+        <option value="$PROJECT_DIR$/js/ConnectorAnchor.js" />
       </list>
     </option>
   </component>
@@ -203,16 +189,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -228,6 +204,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="logicjs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logicjs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logicjs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -293,12 +283,22 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html" />
     <property name="options.searchVisible" value="true" />
@@ -317,8 +317,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/img" />
       <recent name="$PROJECT_DIR$/js" />
+      <recent name="$PROJECT_DIR$/img" />
       <recent name="$PROJECT_DIR$/img/gates" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/libs" />
@@ -372,7 +372,11 @@
       <created>1342865987922</created>
       <updated>1342865987922</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Utworzenie skryptu tworzacego build">
+      <created>1344707014118</created>
+      <updated>1344707014118</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -402,7 +406,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20536344" sideWeight="0.9113608" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20536344" sideWeight="0.9113608" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.4972156" order="11" side_tool="true" content_ui="tabs" />
@@ -475,31 +479,24 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build/css/tstamp.txt">
+    <entry file="file://$PROJECT_DIR$/build/js/logic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="0" selection-start="1861" selection-end="1861" vertical-scroll-proportion="1.4341085" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/kinetic-v3.10.3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1558" column="4" selection-start="45978" selection-end="45978" vertical-scroll-proportion="0.3328823" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="55" selection-start="473" selection-end="473" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/basic.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/js/tstamp.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bootstrap/css/bootstrap-responsive.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="6" selection-start="715" selection-end="715" vertical-scroll-proportion="-0.625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Anchor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/qunit.css">
@@ -507,74 +504,67 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="17" selection-start="2838" selection-end="2838" vertical-scroll-proportion="-2.5316455">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/js/logic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="0" selection-start="1861" selection-end="1861" vertical-scroll-proportion="1.4341085">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Logic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="63" selection-start="82" selection-end="82" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/basic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/And.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="12" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0">
+        <state line="44" column="0" selection-start="1201" selection-end="1201" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Workflow.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="47" selection-start="933" selection-end="933" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="47" selection-start="3614" selection-end="3614" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="6" selection-start="715" selection-end="715" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Gate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="20" selection-start="248" selection-end="248" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/kinetic-v3.10.3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1558" column="4" selection-start="45978" selection-end="45978" vertical-scroll-proportion="0.3328823">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/kinetic-v3.10.5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2499" column="4" selection-start="74117" selection-end="74117" vertical-scroll-proportion="0.3328823">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Workflow.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="338" selection-end="338" vertical-scroll-proportion="-3.5454545">
-          <folding />
-        </state>
+        <state line="17" column="46" selection-start="507" selection-end="507" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Connector.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="11" selection-start="1147" selection-end="1147" vertical-scroll-proportion="0.5426357">
+        <state line="39" column="0" selection-start="1164" selection-end="1164" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Logic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="63" selection-start="82" selection-end="82" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Anchor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="50" selection-start="530" selection-end="530" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/kinetic-v3.10.5.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2650" column="4" selection-start="78285" selection-end="78285" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/GateAnchor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="0" selection-start="1078" selection-end="1078" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/ConnectorAnchor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="34" selection-start="1671" selection-end="1671" vertical-scroll-proportion="0.59110475">
           <folding />
         </state>
       </provider>

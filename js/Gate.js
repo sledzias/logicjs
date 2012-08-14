@@ -13,6 +13,12 @@ logicjs.Gate =  Kinetic.Group.extend({
          this.moveToTop();
         });
 
+        this.on('dragmove',function(){
+            _.each(this.getAnchors(),function(anchor){
+                    anchor.notifyConnectors();
+            });
+        });
+
     },
 
 
@@ -36,6 +42,16 @@ logicjs.Gate =  Kinetic.Group.extend({
         for (var n; n<obj.inputs.length; n++){
             this.add(new logicjs.Anchor(obj.inputs[n]));
         }
+    },
+
+    /**
+     * zwraca wszystkie piny danej bramki
+     * todo dodac parametr listy, ktory ograniczalby piny do wejsciowych,wyjsciowych,zegara
+     */
+    getAnchors : function(){
+           return _.filter(this.getChildren(),function(element){
+               return _.indexOf(['input','output'],element.getName()) > -1;
+           });
     }
   });
 

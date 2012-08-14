@@ -11,6 +11,19 @@ logicjs.Anchor =  Kinetic.Circle.extend({
         this.oType = 'Anchor';
         // call super constructor
         this._super(config);
+
+        this.on('mouseover',function(){
+            $('body').css('cursor','pointer');
+        });
+
+        this.on('mouseout',function(){
+
+                $('body').css('cursor','default');
+
+
+        });
+
+
     },
 
 
