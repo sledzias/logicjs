@@ -37,7 +37,13 @@ logicjs._toJSON = function(node){
 
         this.on('dragmove',function(){
             _.each(this.getAnchors(),function(anchor){
-                    anchor.notifyConnectors();
+                    anchor.notifyConnectors('dragmove');
+            });
+        });
+
+        this.on('dragend',function(){
+            _.each(this.getAnchors(),function(anchor){
+                anchor.notifyConnectors('dragend');
             });
         });
 
@@ -211,6 +217,7 @@ logicjs.And =  logicjs.Gate.extend({
         this.drawLine();
         this.add(this.line);
         this.on('dragmove dragend', function(e){
+
            that.drawLine();
             this.getLayer().draw();
 
@@ -329,10 +336,12 @@ logicjs.And =  logicjs.Gate.extend({
                 this.setRadius(5);
             }
         });
+
         this.on('dragend',function(e){
             var anchors = this.getDroppedAnchors(e);
             if (anchors.length > 0){
                 this.connectTo(_.first(anchors));
+
 
             }
             else{
@@ -340,6 +349,8 @@ logicjs.And =  logicjs.Gate.extend({
               this.eliminate();
 
             }
+            this.simulate('dragmove');
+            this.getLayer().draw();
         });
 
 
@@ -364,6 +375,9 @@ logicjs.And =  logicjs.Gate.extend({
     updatePosition : function(pos){
         this.setPosition(pos);
         this.simulate('dragmove');
+
+
+
     },
 
     connectTo : function(anchor){
@@ -371,6 +385,7 @@ logicjs.And =  logicjs.Gate.extend({
             this.disconnectFrom();
         }
         this.setConnectedAnchor(anchor) ;
+        this.setPosition(anchor.getAbsolutePosition());
         anchor.connectTo(this);
     },
 
@@ -449,10 +464,14 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         return this.getAttrs().connectors;
     },
 
-    notifyConnectors : function(){
+    notifyConnectors : function(event_str){
        // console.log('anchor '+this._id + this.getConnectors());
         _.each(this.getConnectors(),function(connector){
                 connector.updatePosition(this.getAbsolutePosition());
+                if(event_str == 'dragend'){
+                    // wymuszenie m.in. oktualizacji saveImageData()
+                    connector.getParent().simulate(event_str);
+                }
         },this);
     }
 
@@ -488,7 +507,7 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         mainLayer.add(and);
 
         mainLayer.draw();
-       
+
 
 
     },

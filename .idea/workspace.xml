@@ -11,8 +11,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/ConnectorAnchor.js" afterPath="$PROJECT_DIR$/js/ConnectorAnchor.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Gate.js" afterPath="$PROJECT_DIR$/js/Gate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/GateAnchor.js" afterPath="$PROJECT_DIR$/js/GateAnchor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Workflow.js" afterPath="$PROJECT_DIR$/js/Workflow.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test.js" afterPath="$PROJECT_DIR$/test/test.js" />
     </list>
     <ignored path="logicjs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,10 +32,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Workflow.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Workflow.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Workflow.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="0" selection-start="692" selection-end="692" vertical-scroll-proportion="0.3758967">
+            <state line="29" column="0" selection-start="692" selection-end="692" vertical-scroll-proportion="-7.909091">
               <folding />
             </state>
           </provider>
@@ -61,10 +59,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConnectorAnchor.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ConnectorAnchor.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/ConnectorAnchor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="31" selection-start="950" selection-end="950" vertical-scroll-proportion="-14.076923">
+            <state line="70" column="55" selection-start="1941" selection-end="1941" vertical-scroll-proportion="0.43663913">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Anchor.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/Anchor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="50" selection-start="530" selection-end="530" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -82,7 +89,7 @@
       <file leaf-file-name="Gate.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Gate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="26" selection-start="119" selection-end="123" vertical-scroll-proportion="-1.7307693">
+            <state line="23" column="48" selection-start="688" selection-end="688" vertical-scroll-proportion="-13.269231">
               <folding />
             </state>
           </provider>
@@ -100,7 +107,7 @@
       <file leaf-file-name="GateAnchor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/GateAnchor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="42" selection-start="377" selection-end="377" vertical-scroll-proportion="-5.769231">
+            <state line="43" column="68" selection-start="1359" selection-end="1359" vertical-scroll-proportion="-21.576923">
               <folding />
             </state>
           </provider>
@@ -109,7 +116,7 @@
       <file leaf-file-name="Connector.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Connector.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="0" selection-start="1209" selection-end="1209" vertical-scroll-proportion="-13.269231">
+            <state line="38" column="0" selection-start="1145" selection-end="1145" vertical-scroll-proportion="-21.923077">
               <folding />
             </state>
           </provider>
@@ -137,12 +144,12 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/Anchor.js" />
         <option value="$PROJECT_DIR$/js/And.js" />
+        <option value="$PROJECT_DIR$/test/test.js" />
+        <option value="$PROJECT_DIR$/js/Workflow.js" />
         <option value="$PROJECT_DIR$/js/Gate.js" />
         <option value="$PROJECT_DIR$/js/GateAnchor.js" />
-        <option value="$PROJECT_DIR$/js/ConnectorAnchor.js" />
-        <option value="$PROJECT_DIR$/test/test.js" />
         <option value="$PROJECT_DIR$/js/Connector.js" />
-        <option value="$PROJECT_DIR$/js/Workflow.js" />
+        <option value="$PROJECT_DIR$/js/ConnectorAnchor.js" />
       </list>
     </option>
   </component>
@@ -367,7 +374,11 @@
       <created>1344963704580</created>
       <updated>1344963704581</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="dodanie drag&amp;drop przy dodawaniu polaczen, prawidlowe usuwanie polaczen">
+      <created>1345048622509</created>
+      <updated>1345048622509</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -394,10 +405,11 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="false" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20536344" sideWeight="0.9113608" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20536344" sideWeight="0.9113608" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.4972156" order="11" side_tool="true" content_ui="tabs" />
@@ -408,7 +420,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -451,7 +462,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="dodanie tworzenia polaczen" />
+    <option name="LAST_COMMIT_MESSAGE" value="dodanie drag&amp;drop przy dodawaniu polaczen, prawidlowe usuwanie polaczen" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -466,6 +477,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="Utworzenie skryptu tworzacego build" />
     <MESSAGE value="dodanie tworzenia polaczen" />
+    <MESSAGE value="dodanie drag&amp;drop przy dodawaniu polaczen, prawidlowe usuwanie polaczen" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -498,11 +510,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Anchor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="50" selection-start="530" selection-end="530" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="6" selection-start="715" selection-end="715" vertical-scroll-proportion="-15.0">
@@ -513,20 +520,6 @@
     <entry file="file://$PROJECT_DIR$/libs/kinetic-v3.10.5.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2145" column="4" selection-start="65139" selection-end="65139" vertical-scroll-proportion="-5.6538463">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/GateAnchor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="42" selection-start="377" selection-end="377" vertical-scroll-proportion="-5.769231">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Gate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="26" selection-start="119" selection-end="123" vertical-scroll-proportion="-1.7307693">
           <folding />
         </state>
       </provider>
@@ -543,13 +536,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/ConnectorAnchor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="31" selection-start="950" selection-end="950" vertical-scroll-proportion="-14.076923">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="174" column="25" selection-start="7966" selection-end="7966" vertical-scroll-proportion="-8.036364">
@@ -557,16 +543,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Connector.js">
+    <entry file="file://$PROJECT_DIR$/js/Workflow.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1209" selection-end="1209" vertical-scroll-proportion="-13.269231">
+        <state line="29" column="0" selection-start="692" selection-end="692" vertical-scroll-proportion="-7.909091">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Workflow.js">
+    <entry file="file://$PROJECT_DIR$/js/Gate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="0" selection-start="692" selection-end="692" vertical-scroll-proportion="0.3758967">
+        <state line="23" column="48" selection-start="688" selection-end="688" vertical-scroll-proportion="-13.269231">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/GateAnchor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="68" selection-start="1359" selection-end="1359" vertical-scroll-proportion="-21.576923">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Anchor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="50" selection-start="530" selection-end="530" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Connector.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="0" selection-start="1145" selection-end="1145" vertical-scroll-proportion="-21.923077">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/ConnectorAnchor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="1941" selection-end="1941" vertical-scroll-proportion="0.43663913">
           <folding />
         </state>
       </provider>

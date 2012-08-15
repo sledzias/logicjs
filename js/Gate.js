@@ -15,7 +15,13 @@ logicjs.Gate =  Kinetic.Group.extend({
 
         this.on('dragmove',function(){
             _.each(this.getAnchors(),function(anchor){
-                    anchor.notifyConnectors();
+                    anchor.notifyConnectors('dragmove');
+            });
+        });
+
+        this.on('dragend',function(){
+            _.each(this.getAnchors(),function(anchor){
+                anchor.notifyConnectors('dragend');
             });
         });
 

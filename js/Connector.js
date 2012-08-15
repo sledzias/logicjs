@@ -36,6 +36,7 @@ logicjs.Connector =  Kinetic.Group.extend({
         this.drawLine();
         this.add(this.line);
         this.on('dragmove dragend', function(e){
+
            that.drawLine();
             this.getLayer().draw();
 

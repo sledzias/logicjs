@@ -36,10 +36,14 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         return this.getAttrs().connectors;
     },
 
-    notifyConnectors : function(){
+    notifyConnectors : function(event_str){
        // console.log('anchor '+this._id + this.getConnectors());
         _.each(this.getConnectors(),function(connector){
                 connector.updatePosition(this.getAbsolutePosition());
+                if(event_str == 'dragend'){
+                    // wymuszenie m.in. oktualizacji saveImageData()
+                    connector.getParent().simulate(event_str);
+                }
         },this);
     }
 

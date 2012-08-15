@@ -19,10 +19,12 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
                 this.setRadius(5);
             }
         });
+
         this.on('dragend',function(e){
             var anchors = this.getDroppedAnchors(e);
             if (anchors.length > 0){
                 this.connectTo(_.first(anchors));
+
 
             }
             else{
@@ -30,6 +32,8 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
               this.eliminate();
 
             }
+            this.simulate('dragmove');
+            this.getLayer().draw();
         });
 
 
@@ -54,6 +58,9 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     updatePosition : function(pos){
         this.setPosition(pos);
         this.simulate('dragmove');
+
+
+
     },
 
     connectTo : function(anchor){
@@ -61,6 +68,7 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
             this.disconnectFrom();
         }
         this.setConnectedAnchor(anchor) ;
+        this.setPosition(anchor.getAbsolutePosition());
         anchor.connectTo(this);
     },
 
