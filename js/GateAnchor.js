@@ -5,6 +5,12 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         this._super(config);
         this.oType = 'GateAnchor';
         this.getAttrs().connectors = [];
+        this.on('mousedown',function(e){
+            console.log('anchor mousedown')
+            e.cancelBubble = true;
+            this.getStage().makeConnector(this);
+
+        });
     },
 
     /**
@@ -31,7 +37,7 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
     },
 
     notifyConnectors : function(){
-        console.log('anchor '+this._id + this.getConnectors());
+       // console.log('anchor '+this._id + this.getConnectors());
         _.each(this.getConnectors(),function(connector){
                 connector.updatePosition(this.getAbsolutePosition());
         },this);

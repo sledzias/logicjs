@@ -1,6 +1,6 @@
 module( "Logicjs serialization" ,{
 setup: function() {
-    this.stage = new Kinetic.Stage({
+    this.stage = new logicjs.Workflow({
         container: "container",
         width: 500,
         height: 200
@@ -58,6 +58,8 @@ module( "Logicjs Obsluga polaczen" ,{
             width: 500,
             height: 200
         });
+        this.layer = new Kinetic.Layer();
+        this.stage.add(this.layer);
 
     },
     teardown: function() {
@@ -74,11 +76,13 @@ test( "Dodawanie polaczenia do bramki",6, function() {
     ok(gateAnchor !== null, 'utworzono gateAnchor');
     ok(connectorAnchor !== null, 'utworzono connectorAnchor');
     equal(gateAnchor.getConnectors().length, 0, 'getConnector powinien byc rowny 0 dla niedodanych polaczen');
-    gateAnchor.connectTo(connectorAnchor);
+    //gateAnchor.connectTo(connectorAnchor);
+    connectorAnchor.connectTo(gateAnchor);
     equal(gateAnchor.getConnectors().length, 1, 'getConnector powinien byc rowny 1 dla dodanego polaczenia');
     var tempAnchor = gateAnchor.getConnectors()[0];
     deepEqual(connectorAnchor,tempAnchor,'zwrocony pin powinien byc taki sam jak dodany');
-    gateAnchor.connectTo(connectorAnchor);
+    //gateAnchor.connectTo(connectorAnchor);
+    connectorAnchor.connectTo(gateAnchor);
     equal(gateAnchor.getConnectors().length, 1, 'getConnector powinien byc rowny 1 dla dodania istniejacego polaczenia');
 
 });
@@ -94,13 +98,87 @@ test( "Usuwanie polaczenia z bramki",4, function() {
 
     gateAnchor.connectTo(new logicjs.ConnectorAnchor({}));
     gateAnchor.connectTo(connectorAnchor);
-    var tempAnchor = new logicjs.ConnectorAnchor({})
+    var tempAnchor = new logicjs.ConnectorAnchor({});
     gateAnchor.connectTo(tempAnchor);
     gateAnchor.connectTo(new logicjs.ConnectorAnchor({}));
     gateAnchor.disconnectFrom(connectorAnchor);
     equal(gateAnchor.getConnectors().length, 3, 'getConnector powinien byc rowny 3 po dodaniu 4 i usunieciu 1 polaczenia');
     ok(_.indexOf(gateAnchor.getConnectors(),connectorAnchor)==-1, 'getConnector nie powinien zawierac usunietego polaczenia');
     ok(_.indexOf(gateAnchor.getConnectors(),tempAnchor)>-1, 'getConnector powinien zaiwerac nieusuniete polaczenie');
+
+});
+
+test( "Dodawanie kilku polaczen do jednego pinu bramki",15, function() {
+    var gateAnchor = new logicjs.GateAnchor({});
+    var connectorAnchor1 = new logicjs.ConnectorAnchor({});
+    var connectorAnchor2 = new logicjs.ConnectorAnchor({});
+    var connectorAnchor3 = new logicjs.ConnectorAnchor({});
+
+
+    ok(connectorAnchor2.getConnectedAnchor() == null, 'Pin connectora 2 nie powinien byc polaczony z zadnym pinem bramki');
+
+    connectorAnchor1.connectTo(gateAnchor);
+    connectorAnchor1.connectTo(gateAnchor);
+    connectorAnchor1.connectTo(gateAnchor);
+
+    equal(gateAnchor.getConnectors().length, 1, 'getConnector powinien byc rowny 1 po dodaniu 3 razy tego samego polaczenia');
+    equal(connectorAnchor1.getConnectedAnchor(), gateAnchor, 'Pin connectora   powinien byc polaczony z pinem bramki');
+
+    connectorAnchor2.connectTo(gateAnchor);
+    connectorAnchor3.connectTo(gateAnchor);
+
+    equal(gateAnchor.getConnectors().length, 3, 'getConnector powinien byc rowny 1 po dodaniu 3 roznych  polaczen');
+    equal(connectorAnchor1.getConnectedAnchor(), gateAnchor, 'Pin connectora 1   powinien byc polaczony z pinem bramki');
+    equal(connectorAnchor2.getConnectedAnchor(), gateAnchor, 'Pin connectora 2  powinien byc polaczony z pinem bramki');
+    equal(connectorAnchor3.getConnectedAnchor(), gateAnchor, 'Pin connectora 3  powinien byc polaczony z pinem bramki');
+
+    connectorAnchor2.disconnectFrom();
+
+    equal(gateAnchor.getConnectors().length, 2, 'getConnector powinien byc rowny 2 po usunieciu 1  polaczenia');
+    equal(connectorAnchor1.getConnectedAnchor(), gateAnchor, 'Pin connectora 1   powinien byc polaczony z pinem bramki');
+    ok(connectorAnchor2.getConnectedAnchor()==null, 'Pin connectora 2 nie powinien byc polaczony z zadnym pinem bramki');
+    equal(connectorAnchor3.getConnectedAnchor(), gateAnchor, 'Pin connectora 3  powinien byc polaczony z pinem bramki');
+
+    connectorAnchor2.connectTo(gateAnchor);
+    equal(gateAnchor.getConnectors().length, 3, 'getConnector powinien byc rowny 3 po dodaniu po ponownym dodaniu pinu connectora 2');
+    equal(connectorAnchor1.getConnectedAnchor(), gateAnchor, 'Pin connectora 1   powinien byc polaczony z pinem bramki');
+    equal(connectorAnchor2.getConnectedAnchor(), gateAnchor, 'Pin connectora 2  powinien byc polaczony z pinem bramki');
+    equal(connectorAnchor3.getConnectedAnchor(), gateAnchor, 'Pin connectora 3  powinien byc polaczony z pinem bramki');
+});
+
+
+test( "Usuwanie polaczenia",10, function() {
+
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var gateAnchor1 = new logicjs.GateAnchor({});
+    var gateAnchor2 = new logicjs.GateAnchor({});
+    this.layer.add(connector);
+    this.layer.add(gateAnchor1);
+    this.layer.add(gateAnchor2);
+
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+
+    ok(connectorAnchor1.getParent() === connector, 'pin1 powinien nalezec do polaczenia');
+    ok(connectorAnchor2.getParent() === connector, 'pin2 powinien nalezec do polaczenia');
+    ok(connectorAnchor1.getConnectedAnchor() == null, 'pin1 polaczenia nie powinien byc podlaczony');
+    ok(connectorAnchor2.getConnectedAnchor() == null, 'pin2 polaczenia nie powinien byc podlaczony');
+    deepEqual(gateAnchor1.getConnectors() , [], 'pin bramki1 nie powinien byc polaczony');
+    deepEqual(gateAnchor2.getConnectors() , [], 'pin bramki2 nie powinien byc polaczony');
+
+    connectorAnchor1.connectTo(gateAnchor1);
+    connectorAnchor2.connectTo(gateAnchor2);
+
+    deepEqual(gateAnchor1.getConnectors(), [connectorAnchor1], 'pin bramki1 powinien byc polaczony z pinem 1 polaczenia');
+    deepEqual(gateAnchor2.getConnectors(), [connectorAnchor2], 'pin bramki2 powinien byc polaczony z pinem 2 polaczenia');
+
+    connector.eliminate();
+
+    equal(gateAnchor1.getConnectors().length , 0, 'pin bramki1 nie powinien byc polaczony');
+    equal(gateAnchor2.getConnectors().length , 0, 'pin bramki2 nie powinien byc polaczony');
+
+
+
 
 });
 

@@ -25,15 +25,26 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         var and = new logicjs.And(coords);
         var mainLayer = this.get('#mainLayer')[0];
         mainLayer.add(and);
-        this.get('#connectorsLayer')[0].add(new logicjs.Connector({
-            points: [73, 70, 340, 23, 450, 60, 500, 20],
+
+        mainLayer.draw();
+
+
+
+    },
+
+    makeConnector : function(anchor){
+        var connector = new logicjs.Connector({
+            points : [anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y,
+                      anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y],
             stroke: "black",
             strokeWidth: 2
+        });
+      //  connector.connectTo([anchor]);
+        this.get('#connectorsLayer')[0].add(connector);
+        connector._getAnchors()[0]._initDrag();
+        connector._getAnchors()[1].connectTo(anchor);
+        this.draw();
 
-        }));
-        mainLayer.draw();
-        this.get('#connectorsLayer')[0].draw();
-        //this.draw();
 
     }
 

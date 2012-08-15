@@ -5,6 +5,7 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         this._super(config);
         this.on('dragstart',function(){
             this.getParent().moveToTop();
+            console.log('connector anchor dragstart');
 
         });
         this.on('dragmove',function(e){
@@ -26,6 +27,8 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
             }
             else{
                 this.disconnectFrom();
+              this.eliminate();
+
             }
         });
 
@@ -54,18 +57,45 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     },
 
     connectTo : function(anchor){
-        if (this.getAttrs().connectedAnchor != null){
+        if (this.getConnectedAnchor() != null){
             this.disconnectFrom();
         }
-        this.getAttrs().connectedAnchor =   anchor ;
+        this.setConnectedAnchor(anchor) ;
         anchor.connectTo(this);
     },
 
     disconnectFrom : function(){
-        if(this.getAttrs().connectedAnchor != null){
-            this.getAttrs().connectedAnchor.disconnectFrom(this);
+        if(this.getConnectedAnchor()!= null){
+            this.getConnectedAnchor().disconnectFrom(this);
+        };
+        this.setConnectedAnchor(null);
+    },
+
+    /**
+     * funcka zwraca obiekt pinu, z ktorym jest polaczony lub null, jezeli nie ma takiego polaczenia
+     * @return {*}
+     */
+    getConnectedAnchor : function(){
+        if (this.getAttrs().connectedAnchor == undefined){
+            return null;
         }
+        return this.getAttrs().connectedAnchor;
+    },
+    /**
+     * ustawia obiekt pinu, z ktorym jest polaczony lub null, jezeli nie ma takiego polaczenia
+     * @return {*} zwraca poprzednia wartosc
+     */
+    setConnectedAnchor : function(anchor){
+        var old = this.getAttrs().connectedAnchor;
+        this.getAttrs().connectedAnchor = anchor;
+        return old;
+
+    },
+    eliminate : function(){
+        this.getParent().eliminate();
     }
+
+
 
 
 

@@ -19,6 +19,7 @@ logicjs.Gate =  Kinetic.Group.extend({
             });
         });
 
+
     },
 
 

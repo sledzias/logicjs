@@ -41,6 +41,7 @@ logicjs._toJSON = function(node){
             });
         });
 
+
     },
 
 
@@ -177,7 +178,9 @@ logicjs.And =  logicjs.Gate.extend({
         var that = this;
         this.setDefaultAttrs({
             draggable:false,
-            points : [0,0,10,10]
+            points : [0,0,10,10],
+            stroke: "black",
+            strokeWidth: 2
         });
         this.oType = 'Connector';
         // call super constructor
@@ -210,6 +213,7 @@ logicjs.And =  logicjs.Gate.extend({
         this.on('dragmove dragend', function(e){
            that.drawLine();
             this.getLayer().draw();
+
         });
 
         this.on('dragend mouseout ', function(e){
@@ -244,17 +248,13 @@ logicjs.And =  logicjs.Gate.extend({
 
     _getLine : function(){
 
-        return this;
+        //return this;
         var line = {};
-        if (this.get('.line').length() == 0){
-
-        }
-        else{
 
             return _.filter(this.getChildren(),function(child){
                 return child.getName() == 'line'
             })[0];
-        }
+
     },
 
     _getAnchors : function(){
@@ -263,6 +263,29 @@ logicjs.And =  logicjs.Gate.extend({
         });
     },
 
+    _setAnchors : function(anchors){
+        for (var a in anchors) {
+            this.add(anchors[a]);
+        }
+    },
+
+    connectTo : function(gateAnchors){
+        var anchors = [];
+        for (var ga in gateAnchors){
+            console.log(gateAnchors[ga]);
+            var a = new logicjs.ConnectorAnchor({x : gateAnchors[ga].getAbsolutePosition().x, y : gateAnchors[ga].getAbsolutePosition().y});
+            a.connectTo(gateAnchors[ga]);
+            this.add(a);
+
+        }
+    },
+
+    eliminate : function(){
+        _.each(this._getAnchors(), function(anchor){
+           anchor.disconnectFrom();
+        });
+        this.getLayer().remove(this);
+    },
 
     /** @return  JSON z atrybutami*/
     toJSON: function(){
@@ -292,6 +315,7 @@ logicjs.And =  logicjs.Gate.extend({
         this._super(config);
         this.on('dragstart',function(){
             this.getParent().moveToTop();
+            console.log('connector anchor dragstart');
 
         });
         this.on('dragmove',function(e){
@@ -313,6 +337,8 @@ logicjs.And =  logicjs.Gate.extend({
             }
             else{
                 this.disconnectFrom();
+              this.eliminate();
+
             }
         });
 
@@ -341,18 +367,45 @@ logicjs.And =  logicjs.Gate.extend({
     },
 
     connectTo : function(anchor){
-        if (this.getAttrs().connectedAnchor != null){
+        if (this.getConnectedAnchor() != null){
             this.disconnectFrom();
         }
-        this.getAttrs().connectedAnchor =   anchor ;
+        this.setConnectedAnchor(anchor) ;
         anchor.connectTo(this);
     },
 
     disconnectFrom : function(){
-        if(this.getAttrs().connectedAnchor != null){
-            this.getAttrs().connectedAnchor.disconnectFrom(this);
+        if(this.getConnectedAnchor()!= null){
+            this.getConnectedAnchor().disconnectFrom(this);
+        };
+        this.setConnectedAnchor(null);
+    },
+
+    /**
+     * funcka zwraca obiekt pinu, z ktorym jest polaczony lub null, jezeli nie ma takiego polaczenia
+     * @return {*}
+     */
+    getConnectedAnchor : function(){
+        if (this.getAttrs().connectedAnchor == undefined){
+            return null;
         }
+        return this.getAttrs().connectedAnchor;
+    },
+    /**
+     * ustawia obiekt pinu, z ktorym jest polaczony lub null, jezeli nie ma takiego polaczenia
+     * @return {*} zwraca poprzednia wartosc
+     */
+    setConnectedAnchor : function(anchor){
+        var old = this.getAttrs().connectedAnchor;
+        this.getAttrs().connectedAnchor = anchor;
+        return old;
+
+    },
+    eliminate : function(){
+        this.getParent().eliminate();
     }
+
+
 
 
 
@@ -365,6 +418,12 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         this._super(config);
         this.oType = 'GateAnchor';
         this.getAttrs().connectors = [];
+        this.on('mousedown',function(e){
+            console.log('anchor mousedown')
+            e.cancelBubble = true;
+            this.getStage().makeConnector(this);
+
+        });
     },
 
     /**
@@ -391,7 +450,7 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
     },
 
     notifyConnectors : function(){
-        console.log('anchor '+this._id + this.getConnectors());
+       // console.log('anchor '+this._id + this.getConnectors());
         _.each(this.getConnectors(),function(connector){
                 connector.updatePosition(this.getAbsolutePosition());
         },this);
@@ -427,15 +486,26 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         var and = new logicjs.And(coords);
         var mainLayer = this.get('#mainLayer')[0];
         mainLayer.add(and);
-        this.get('#connectorsLayer')[0].add(new logicjs.Connector({
-            points: [73, 70, 340, 23, 450, 60, 500, 20],
+
+        mainLayer.draw();
+       
+
+
+    },
+
+    makeConnector : function(anchor){
+        var connector = new logicjs.Connector({
+            points : [anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y,
+                      anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y],
             stroke: "black",
             strokeWidth: 2
+        });
+      //  connector.connectTo([anchor]);
+        this.get('#connectorsLayer')[0].add(connector);
+        connector._getAnchors()[0]._initDrag();
+        connector._getAnchors()[1].connectTo(anchor);
+        this.draw();
 
-        }));
-        mainLayer.draw();
-        this.get('#connectorsLayer')[0].draw();
-        //this.draw();
 
     }
 
