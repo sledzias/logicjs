@@ -9,6 +9,7 @@ logicjs.Anchor =  Kinetic.Circle.extend({
         });
 
         this.oType = 'Anchor';
+        this.shapeType = 'Anchor';
         // call super constructor
         this._super(config);
 

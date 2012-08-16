@@ -5,9 +5,11 @@ logicjs.And =  logicjs.Gate.extend({
             x:0,
             y:0
         });
-        this.oType = 'Gate';
-        // call super constructor
         this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'And';
+        // call super constructor
+
 
         this.add(new Kinetic.Shape({
             drawFunc:function (context) {

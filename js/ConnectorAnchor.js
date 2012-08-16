@@ -1,6 +1,7 @@
 logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     init: function(config) {
         this.oType = 'ConnectorAnchor';
+        this.shapeType =  'ConnectorAnchor';
         // call super constructor
         this._super(config);
         this.on('dragstart',function(){

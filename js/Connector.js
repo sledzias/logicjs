@@ -7,9 +7,11 @@ logicjs.Connector =  Kinetic.Group.extend({
             stroke: "black",
             strokeWidth: 2
         });
-        this.oType = 'Connector';
-        // call super constructor
         this._super(config);
+        this.oType = 'Connector';
+        this.nodeType = 'Connector';
+        // call super constructor
+
 
 
 

@@ -4,6 +4,7 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         // call super constructor
         this._super(config);
         this.oType = 'GateAnchor';
+        this.shapeType = 'GateAnchor';
         this.getAttrs().connectors = [];
         this.on('mousedown',function(e){
             console.log('anchor mousedown')
