@@ -16,13 +16,13 @@ logicjs.Connector =  Kinetic.Group.extend({
 
 
         this.add(new logicjs.ConnectorAnchor({
-            name:'anchor',
+
             x : that.getAttrs().points[0].x,
             y : that.getAttrs().points[0].y,
             draggable  : true
         }));
         this.add(new logicjs.ConnectorAnchor({
-            name:'anchor',
+
             x : that.getAttrs().points[that.getAttrs().points.length-1].x,
             y : that.getAttrs().points[that.getAttrs().points.length-1].y,
             draggable  : true
@@ -87,7 +87,7 @@ logicjs.Connector =  Kinetic.Group.extend({
 
     _getAnchors : function(){
         return _.filter(this.getChildren(),function(child){
-                return child.getName() == 'anchor';
+                return child.getName() == 'connectorAnchor';
         });
     },
 

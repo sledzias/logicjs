@@ -201,13 +201,13 @@ logicjs.And =  logicjs.Gate.extend({
 
 
         this.add(new logicjs.ConnectorAnchor({
-            name:'anchor',
+
             x : that.getAttrs().points[0].x,
             y : that.getAttrs().points[0].y,
             draggable  : true
         }));
         this.add(new logicjs.ConnectorAnchor({
-            name:'anchor',
+
             x : that.getAttrs().points[that.getAttrs().points.length-1].x,
             y : that.getAttrs().points[that.getAttrs().points.length-1].y,
             draggable  : true
@@ -272,7 +272,7 @@ logicjs.And =  logicjs.Gate.extend({
 
     _getAnchors : function(){
         return _.filter(this.getChildren(),function(child){
-                return child.getName() == 'anchor';
+                return child.getName() == 'connectorAnchor';
         });
     },
 
@@ -323,10 +323,12 @@ logicjs.And =  logicjs.Gate.extend({
     }
 });logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     init: function(config) {
+        this._super(config);
         this.oType = 'ConnectorAnchor';
         this.shapeType =  'ConnectorAnchor';
-        // call super constructor
-        this._super(config);
+        this.setDefaultAttrs({
+           name : 'connectorAnchor'
+        });
         this.on('dragstart',function(){
             this.getParent().moveToTop();
             console.log('connector anchor dragstart');
@@ -425,6 +427,15 @@ logicjs.And =  logicjs.Gate.extend({
     },
     eliminate : function(){
         this.getParent().eliminate();
+    },
+
+    connectToHoverAnchor : function(){
+        var anchors = this.getDroppedAnchors({layerX : this.getAbsolutePosition().x, layerY : this.getAbsolutePosition().y});
+        if (anchors.length > 0){
+           this.connectTo(_.first(anchors));
+        }
+        this.simulate('dragmove');
+        this.getLayer().draw();
     }
 
 
@@ -615,8 +626,12 @@ logicjs.Workflow =  Kinetic.Stage.extend({
                     }
                    catch(e){
                         console.log(type);
-                       console.log(e);
+
                        var no = new logicjs[type](child.attrs);
+                       if (type == 'Connector'){
+                           no.removeChildren();
+                       }
+
 
                    }
                     node.add(no);
@@ -631,7 +646,11 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         this.attrs = obj.attrs;
 
         loadNode(this, obj);
+
         this.draw();
+        _.each(this.get('.connectorAnchor'),function(anchor){
+            anchor.connectToHoverAnchor();
+        });
     }
 
 })

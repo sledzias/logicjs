@@ -1,9 +1,11 @@
 logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     init: function(config) {
+        this._super(config);
         this.oType = 'ConnectorAnchor';
         this.shapeType =  'ConnectorAnchor';
-        // call super constructor
-        this._super(config);
+        this.setDefaultAttrs({
+           name : 'connectorAnchor'
+        });
         this.on('dragstart',function(){
             this.getParent().moveToTop();
             console.log('connector anchor dragstart');
@@ -102,6 +104,15 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     },
     eliminate : function(){
         this.getParent().eliminate();
+    },
+
+    connectToHoverAnchor : function(){
+        var anchors = this.getDroppedAnchors({layerX : this.getAbsolutePosition().x, layerY : this.getAbsolutePosition().y});
+        if (anchors.length > 0){
+           this.connectTo(_.first(anchors));
+        }
+        this.simulate('dragmove');
+        this.getLayer().draw();
     }
 
 

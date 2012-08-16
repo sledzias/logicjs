@@ -127,8 +127,12 @@ logicjs.Workflow =  Kinetic.Stage.extend({
                     }
                    catch(e){
                         console.log(type);
-                       console.log(e);
+
                        var no = new logicjs[type](child.attrs);
+                       if (type == 'Connector'){
+                           no.removeChildren();
+                       }
+
 
                    }
                     node.add(no);
@@ -143,7 +147,11 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         this.attrs = obj.attrs;
 
         loadNode(this, obj);
+
         this.draw();
+        _.each(this.get('.connectorAnchor'),function(anchor){
+            anchor.connectToHoverAnchor();
+        });
     }
 
 })
