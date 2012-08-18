@@ -41,7 +41,7 @@
         }
 
         .Gate[gate=switch] {
-            background: url(img/gates/and.png) no-repeat;
+            background: url(img/gates/or.png) no-repeat;
         }
 
         .Gate[gate=bulb] {
@@ -72,9 +72,9 @@
         <div class="span2">
 
             <div class="Gate" gate="and"></div>
-            <div class="Gate" gate="or"></div>
+            <div class="Gate" gate="and"></div>
             <div class="Gate" gate="switch"></div>
-            <div class="Gate" gate="bulb"></div>
+            <div class="Gate" gate="switch"></div>
 
             <label for="gridCheckbox">Pokaż/ukryj siatkę<input type="checkbox" id="gridCheckbox"></label>
             <!--Sidebar content-->
@@ -116,19 +116,19 @@
                 var y = ui.offset.top - $(this).offset().top + $(this).scrollTop();
 
                 var gateType = ui.draggable.attr('gate');
-                console.log(ui.draggable.attr('gate'));
+                console.log(gateType);
                 if (gateType == 'and') {
-                     workflow.addGate({x:x, y:y});
+                     workflow.addGate({x:x, y:y},'And');
                 }
 //                    if (gateType == 'or') {
 //                        var orGate = new logicjs.Or(x, y);
 //                        console.log(orGate);
 //                        logicjs.workflow.addGate(orGate);
 //                    }
-//                    if (gateType == 'switch') {
-//
-//                        logicjs.workflow.addGate(new logicjs.Switch(x, y));
-//                    }
+                    if (gateType == 'switch') {
+
+                        workflow.addGate({x:x, y:y},'Switch');
+                    }
 //                    if (gateType == 'bulb') {
 //
 //                        logicjs.workflow.addGate(new logicjs.Bulb(x, y));

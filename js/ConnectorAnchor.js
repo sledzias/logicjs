@@ -73,6 +73,8 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         this.setConnectedAnchor(anchor) ;
         this.setPosition(anchor.getAbsolutePosition());
         anchor.connectTo(this);
+        this.setLogicState(anchor.getLogicState());
+        this.getParent().simulate('pinChange');
     },
 
     disconnectFrom : function(){
@@ -113,6 +115,25 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         }
         this.simulate('dragmove');
         this.getLayer().draw();
+    },
+
+    triggerLogicState : function(){
+       if(this.isConnectedTo('output')){
+            this.getParent().simulate('pinChanged');
+       }
+       else if(this.isConnectedTo('input') || this.isConnectedTo('clock')){
+           this.getConnectedAnchor().setLogicState(this.getLogicState());
+       }
+    },
+
+    /**
+     * zwraca informacje, czy pin jest polaczony do podanego typu lub czy wogole jest polaczony, jezeli argument pusty.
+     * @param {string} jeden z typow logicjs.gatePinTypes lub pusty
+     */
+    isConnectedTo : function(){
+        var types = _.toArray(arguments).length == 0 ? logicjs.gatePinTypes : _.toArray(arguments);
+
+        return this.getConnectedAnchor() && _.indexOf(types,this.getConnectedAnchor().getName()) > -1;
     }
 
 

@@ -51,10 +51,53 @@ logicjs.Connector =  Kinetic.Group.extend({
         this._getLine().on('click', function(){
             console.log('line click!');
         });
+        this.on('pinChanged', this.setLogicState);
 
+       _.bindAll(this,'setLogicState');
 
     },
 
+    setLogicState : function(){
+        console.log(this);
+        var connectedToInputAnchor = _.first(_.filter(this._getAnchors(),function(anchor){
+            return anchor.isConnectedTo('input');
+        }));
+
+        var connectedToOutputAnchor = _.first(_.filter(this._getAnchors(),function(anchor){
+            return anchor.isConnectedTo('output');
+        }));
+
+        var disconnectedAnchor = _.first(_.filter(this._getAnchors(),function(anchor){
+            return !anchor.isConnectedTo();
+        }));
+
+        var state = _.isObject(connectedToOutputAnchor) ? connectedToOutputAnchor.getLogicState() : 'undefined';
+
+        if (_.isObject(connectedToInputAnchor)){
+           connectedToInputAnchor.setLogicState(state);
+        }
+
+        if (_.isObject(disconnectedAnchor)){
+            disconnectedAnchor.setLogicState(state);
+        }
+
+        console.log(state);
+        switch(state){
+            case 'low':
+                this._getLine().setStroke('red');
+                break;
+            case 'high':
+                this._getLine().setStroke('green');
+                break;
+            default:
+                this._getLine().setStroke('black');
+                break;
+        }
+
+
+
+//        if (_.isObject(this.getStage())) this.getStage().draw();
+    },
     drawLine : function(){
     //    console.log(this);
         var anchors = this._getAnchors();

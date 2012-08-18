@@ -21,8 +21,8 @@ logicjs.Workflow =  Kinetic.Stage.extend({
 
     },
 
-    addGate : function(coords){
-        var and = new logicjs.And(coords);
+    addGate : function(coords,gate){
+        var and = new logicjs[gate](coords);
         var mainLayer = this.get('#mainLayer')[0];
         mainLayer.add(and);
 

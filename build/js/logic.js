@@ -20,7 +20,10 @@ logicjs._toJSON = function(node){
             obj.shapeType = node.shapeType;
             obj.oType = node.oType || '';
         return obj;
-};logicjs.Gate =  Kinetic.Group.extend({
+};
+
+logicjs.logicStates = ['high', 'low', 'undefined'];
+logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group.extend({
     init: function(config) {
         this.oType = 'Gate';
         this.shapeType = 'Gate';
@@ -46,6 +49,11 @@ logicjs._toJSON = function(node){
             _.each(this.getAnchors(),function(anchor){
                 anchor.notifyConnectors('dragend');
             });
+        });
+
+        this.on('pinChanged', function(){
+            this.calculateOutputs();
+            console.log('pinchanged');
         });
 
 
@@ -76,13 +84,26 @@ logicjs._toJSON = function(node){
 
     /**
      * zwraca wszystkie piny danej bramki
-     * todo dodac parametr listy, ktory ograniczalby piny do wejsciowych,wyjsciowych,zegara
      */
     getAnchors : function(){
+           arguments = _.flatten(arguments);
+           var types = arguments.length != 0 ? arguments :  ['input','output','clock'];
+
            return _.filter(this.getChildren(),function(element){
-               return _.indexOf(['input','output'],element.getName()) > -1;
+               return _.indexOf(types,element.getName()) > -1;
            });
+    },
+
+    calculateOutputs : function(){
+        console.log('Gate: calculateOutputs');
+        _.each(this.getAnchors('outputs'), function(anchor){
+           anchor.setLogicState('undefined');
+        });
+    },
+    getShape : function(){
+        return _.first(this.get('.shape'));
     }
+
   });
 
 logicjs.Anchor =  Kinetic.Circle.extend({
@@ -114,6 +135,51 @@ logicjs.Anchor =  Kinetic.Circle.extend({
 
     },
 
+
+    setLogicState : function(logicState){
+        var s = logicState || 'undefined';
+
+        s =  _.indexOf(logicjs.logicStates, s) > -1 ? s : 'undefined'
+
+        this.getAttrs().logicState=s;
+        this.triggerLogicState(s);
+        console.log(this.getName()+' state ' + s);
+    },
+
+    getLogicState : function(){
+        return this.getAttrs().logicState || 'undefined';
+    },
+
+    getLogicStateInt : function(){
+        switch(this.getLogicState()){
+            case 'high':
+                return 1;
+            case 'low':
+                return 0;
+            default:
+                return NaN;
+        }
+    },
+
+    setLogicStateInt : function(logicStateInt){
+        if(_.isNaN(logicStateInt) || _.isUndefined(logicStateInt)){
+            this.setLogicState('undefined');
+            return;
+        }
+        if (logicStateInt == 1){
+            this.setLogicState('high');
+            return;
+        }
+        if (logicStateInt == 0){
+            this.setLogicState('low');
+            return;
+        }
+    },
+
+    // funkcja wirtualna, do implemetacji w GateAnchor i ConnectorAnchor
+    triggerLogicState : function(s){
+
+    },
 
     /** @return  JSON z atrybutami*/
     toJSON: function(){
@@ -178,7 +244,21 @@ logicjs.And =  logicjs.Gate.extend({
             x : 60,
             y : 30
         }));
+        this.calculateOutputs();
 
+    },
+
+    calculateOutputs : function(){
+        console.log('And: calculateOutputs');
+        var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
+            console.log(memo);
+            return memo * anchor.getLogicStateInt();
+        },1);
+        console.log(val);
+
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
     }
 
 
@@ -236,10 +316,53 @@ logicjs.And =  logicjs.Gate.extend({
         this._getLine().on('click', function(){
             console.log('line click!');
         });
+        this.on('pinChanged', this.setLogicState);
 
+       _.bindAll(this,'setLogicState');
 
     },
 
+    setLogicState : function(){
+        console.log(this);
+        var connectedToInputAnchor = _.first(_.filter(this._getAnchors(),function(anchor){
+            return anchor.isConnectedTo('input');
+        }));
+
+        var connectedToOutputAnchor = _.first(_.filter(this._getAnchors(),function(anchor){
+            return anchor.isConnectedTo('output');
+        }));
+
+        var disconnectedAnchor = _.first(_.filter(this._getAnchors(),function(anchor){
+            return !anchor.isConnectedTo();
+        }));
+
+        var state = _.isObject(connectedToOutputAnchor) ? connectedToOutputAnchor.getLogicState() : 'undefined';
+
+        if (_.isObject(connectedToInputAnchor)){
+           connectedToInputAnchor.setLogicState(state);
+        }
+
+        if (_.isObject(disconnectedAnchor)){
+            disconnectedAnchor.setLogicState(state);
+        }
+
+        console.log(state);
+        switch(state){
+            case 'low':
+                this._getLine().setStroke('red');
+                break;
+            case 'high':
+                this._getLine().setStroke('green');
+                break;
+            default:
+                this._getLine().setStroke('black');
+                break;
+        }
+ 
+
+
+//        if (_.isObject(this.getStage())) this.getStage().draw();
+    },
     drawLine : function(){
     //    console.log(this);
         var anchors = this._getAnchors();
@@ -396,6 +519,8 @@ logicjs.And =  logicjs.Gate.extend({
         this.setConnectedAnchor(anchor) ;
         this.setPosition(anchor.getAbsolutePosition());
         anchor.connectTo(this);
+        this.setLogicState(anchor.getLogicState());
+        this.getParent().simulate('pinChange');
     },
 
     disconnectFrom : function(){
@@ -436,6 +561,25 @@ logicjs.And =  logicjs.Gate.extend({
         }
         this.simulate('dragmove');
         this.getLayer().draw();
+    },
+
+    triggerLogicState : function(){
+       if(this.isConnectedTo('output')){
+            this.getParent().simulate('pinChanged');
+       }
+       else if(this.isConnectedTo('input') || this.isConnectedTo('clock')){
+           this.getConnectedAnchor().setLogicState(this.getLogicState());
+       }
+    },
+
+    /**
+     * zwraca informacje, czy pin jest polaczony do podanego typu lub czy wogole jest polaczony, jezeli argument pusty.
+     * @param {string} jeden z typow logicjs.gatePinTypes lub pusty
+     */
+    isConnectedTo : function(){
+        var types = _.toArray(arguments).length == 0 ? logicjs.gatePinTypes : _.toArray(arguments);
+
+        return this.getConnectedAnchor() && _.indexOf(types,this.getConnectedAnchor().getName()) > -1;
     }
 
 
@@ -468,6 +612,9 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         if (_.indexOf(this.getConnectors(),connector) == -1){
             this.getAttrs().connectors.push(connector);
         }
+        if (this.getName()=='input'){
+            this.setLogicState(connector.getLogicState());
+        }
         return connector;
     },
 
@@ -477,6 +624,9 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
      */
     disconnectFrom : function(connector){
         this.getConnectors().splice(_.indexOf(this.getConnectors(),connector),1);
+        if (this.getName()=='input'){
+            this.setLogicState('undefined');
+        }
     },
 
     getConnectors : function(){
@@ -492,12 +642,94 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
                     connector.getParent().simulate(event_str);
                 }
         },this);
+    },
+    triggerLogicState : function(){
+        if(this.getName()=='input'){
+            this.getParent().simulate('pinChanged');
+        }
+        else if (this.getName() == 'output'){
+            _.each(this.getConnectors(), function(anchorConnector){
+               anchorConnector.setLogicState(this.getLogicState());
+            },this);
+        }
+    },
+    calculateOutputs : function(){
+
+
+        _.each(this.getAnchors('outputs'), function(anchor){
+            anchor.setLogicState('undefined');
+        });
     }
+
 
 
 });
 
-logicjs.Workflow =  Kinetic.Stage.extend({
+logicjs.Switch =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0,
+            logicState : 0
+
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Switch';
+        // call super constructor
+
+
+        this.add(new Kinetic.Shape({
+            drawFunc:function (context) {
+                context.fillStyle = this.attrs.fill;
+                context.strokeStyle = 'black';
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(0, 0);
+                context.lineTo(30, 0);
+                context.arc(30, 30, 30, -Math.PI / 2, Math.PI / 2);
+                context.moveTo(30, 60);
+                context.lineTo(0, 60);
+                context.lineTo(0, 0);
+                context.stroke();
+                context.fill();
+            },
+            name : 'shape',
+            x : 0,
+            y : 0,
+            fill : 'red'
+
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 60,
+            y : 30
+        }));
+
+        this.on('click', function(){
+            this.getAttrs().logicState = this.getAttrs().logicState == 1 ? 0 : 1;
+            console.log(this.getShape());
+            this.getAttrs().logicState == 1 ? this.getShape().setFill('green') :  this.getShape().setFill('red');
+            this.calculateOutputs();
+            this.getStage().draw();
+        });
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        var val = this.getAttrs().logicState;
+
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});logicjs.Workflow =  Kinetic.Stage.extend({
     init: function(config) {
         this.setDefaultAttrs({
                // container : $('#container')
@@ -520,8 +752,8 @@ logicjs.Workflow =  Kinetic.Stage.extend({
 
     },
 
-    addGate : function(coords){
-        var and = new logicjs.And(coords);
+    addGate : function(coords,gate){
+        var and = new logicjs[gate](coords);
         var mainLayer = this.get('#mainLayer')[0];
         mainLayer.add(and);
 

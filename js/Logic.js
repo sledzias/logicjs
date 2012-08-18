@@ -21,3 +21,6 @@ logicjs._toJSON = function(node){
             obj.oType = node.oType || '';
         return obj;
 };
+
+logicjs.logicStates = ['high', 'low', 'undefined'];
+logicjs.gatePinTypes = ['input', 'output','clock'];

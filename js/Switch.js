@@ -1,19 +1,21 @@
-logicjs.And =  logicjs.Gate.extend({
+logicjs.Switch =  logicjs.Gate.extend({
     init: function(config) {
         this.setDefaultAttrs({
             draggable:true,
             x:0,
-            y:0
+            y:0,
+            logicState : 0
+
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'And';
+        this.nodeType = 'Switch';
         // call super constructor
 
 
         this.add(new Kinetic.Shape({
             drawFunc:function (context) {
-                context.fillStyle = 'white';
+                context.fillStyle = this.attrs.fill;
                 context.strokeStyle = 'black';
                 context.lineWidth = 3;
                 context.beginPath();
@@ -28,21 +30,9 @@ logicjs.And =  logicjs.Gate.extend({
             },
             name : 'shape',
             x : 0,
-            y : 0
-        }));
-       var  anchor = new logicjs.GateAnchor({
-            name:'input',
-            x : 0,
-            y : 20
-        });
-        this.add(anchor);
+            y : 0,
+            fill : 'red'
 
-
-
-        this.add(new logicjs.GateAnchor({
-            name:'input',
-            x : 0,
-            y : 40
         }));
 
         this.add(new logicjs.GateAnchor({
@@ -50,17 +40,20 @@ logicjs.And =  logicjs.Gate.extend({
             x : 60,
             y : 30
         }));
+
+        this.on('click', function(){
+            this.getAttrs().logicState = this.getAttrs().logicState == 1 ? 0 : 1;
+            console.log(this.getShape());
+            this.getAttrs().logicState == 1 ? this.getShape().setFill('green') :  this.getShape().setFill('red');
+            this.calculateOutputs();
+            this.getStage().draw();
+        });
         this.calculateOutputs();
 
     },
 
     calculateOutputs : function(){
-        console.log('And: calculateOutputs');
-        var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
-            console.log(memo);
-            return memo * anchor.getLogicStateInt();
-        },1);
-        console.log(val);
+        var val = this.getAttrs().logicState;
 
         _.each(this.getAnchors('output'), function(anchor){
             anchor.setLogicStateInt(val);

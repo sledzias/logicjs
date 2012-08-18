@@ -26,6 +26,11 @@ logicjs.Gate =  Kinetic.Group.extend({
             });
         });
 
+        this.on('pinChanged', function(){
+            this.calculateOutputs();
+            console.log('pinchanged');
+        });
+
 
     },
 
@@ -54,12 +59,25 @@ logicjs.Gate =  Kinetic.Group.extend({
 
     /**
      * zwraca wszystkie piny danej bramki
-     * todo dodac parametr listy, ktory ograniczalby piny do wejsciowych,wyjsciowych,zegara
      */
     getAnchors : function(){
+           arguments = _.flatten(arguments);
+           var types = arguments.length != 0 ? arguments :  ['input','output','clock'];
+
            return _.filter(this.getChildren(),function(element){
-               return _.indexOf(['input','output'],element.getName()) > -1;
+               return _.indexOf(types,element.getName()) > -1;
            });
+    },
+
+    calculateOutputs : function(){
+        console.log('Gate: calculateOutputs');
+        _.each(this.getAnchors('outputs'), function(anchor){
+           anchor.setLogicState('undefined');
+        });
+    },
+    getShape : function(){
+        return _.first(this.get('.shape'));
     }
+
   });
 

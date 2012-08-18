@@ -22,6 +22,9 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         if (_.indexOf(this.getConnectors(),connector) == -1){
             this.getAttrs().connectors.push(connector);
         }
+        if (this.getName()=='input'){
+            this.setLogicState(connector.getLogicState());
+        }
         return connector;
     },
 
@@ -31,6 +34,9 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
      */
     disconnectFrom : function(connector){
         this.getConnectors().splice(_.indexOf(this.getConnectors(),connector),1);
+        if (this.getName()=='input'){
+            this.setLogicState('undefined');
+        }
     },
 
     getConnectors : function(){
@@ -46,7 +52,25 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
                     connector.getParent().simulate(event_str);
                 }
         },this);
+    },
+    triggerLogicState : function(){
+        if(this.getName()=='input'){
+            this.getParent().simulate('pinChanged');
+        }
+        else if (this.getName() == 'output'){
+            _.each(this.getConnectors(), function(anchorConnector){
+               anchorConnector.setLogicState(this.getLogicState());
+            },this);
+        }
+    },
+    calculateOutputs : function(){
+
+
+        _.each(this.getAnchors('outputs'), function(anchor){
+            anchor.setLogicState('undefined');
+        });
     }
+
 
 
 });

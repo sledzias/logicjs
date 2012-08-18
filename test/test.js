@@ -14,13 +14,20 @@ teardown: function() {
 
 }
 });
-test( "Gate: Zwracanie wejsc i wyjsc", 2, function() {
+test( "Gate: Zwracanie wejsc i wyjsc", 7, function() {
     var gate = new logicjs.Gate({});
     this.layer.add(gate);
+    var and = new logicjs.And({});
+    this.layer.add(and);
 
     equal( typeof(gate.get('.input')), "object", "get('.input') powinno byc lista'" );
     equal( typeof(gate.get('.output')), "object", "get('.output') powinno byc lista'" );
 
+    equal(and.getAnchors().length, 3, 'and powinien miec 3 piny (getAnchors bez parametru)');
+    equal(and.getAnchors(['input']).length, 2, 'and powinien miec 2 piny wejsciowe');
+    equal(and.getAnchors(['output']).length, 1, 'and powinien miec 1 pin wyjsciowy');
+    equal(and.getAnchors('output').length, 1, 'and powinien miec 1 pin wyjsciowy');
+    equal(and.getAnchors(['input','output']).length, 3, 'and powinien miec 3 piny (getAnchors z parametrami input i output)');
 });
 
 test( "Gate: serializacja i deserializacja", 3, function() {
@@ -84,6 +91,38 @@ test( "Dodawanie polaczenia do bramki",6, function() {
     //gateAnchor.connectTo(connectorAnchor);
     connectorAnchor.connectTo(gateAnchor);
     equal(gateAnchor.getConnectors().length, 1, 'getConnector powinien byc rowny 1 dla dodania istniejacego polaczenia');
+
+});
+
+test( "test metody ConnectorAnchor.isConnectedTo()",12, function() {
+    var gateInputAnchor = new logicjs.GateAnchor({name:'input'});
+    var gateOutputAnchor = new logicjs.GateAnchor({name:'output'});
+    var gateClockAnchor = new logicjs.GateAnchor({name:'clock'});
+    var connectorAnchor = new logicjs.ConnectorAnchor({});
+
+    this.layer.add(gateInputAnchor);
+    this.layer.add(gateOutputAnchor);
+    this.layer.add(gateClockAnchor);
+    this.layer.add(connectorAnchor);
+
+    connectorAnchor.connectTo(gateInputAnchor);
+    ok(connectorAnchor.isConnectedTo(), 'pin polaczenia jest polaczony do dowolnego pinu bramki');
+    ok(connectorAnchor.isConnectedTo('input'), 'pin polaczenia jest polaczony do wejsciowego pinu bramki');
+    ok(!connectorAnchor.isConnectedTo('output'), 'pin polaczenia nie jest polaczony do wyjsciowego pinu bramki');
+    ok(!connectorAnchor.isConnectedTo('clock'), 'pin polaczenia nie jest polaczony do zegarowego pinu bramki');
+
+    connectorAnchor.connectTo(gateOutputAnchor);
+    ok(connectorAnchor.isConnectedTo(), 'pin polaczenia jest polaczony do dowolnego pinu bramki');
+    ok(!connectorAnchor.isConnectedTo('input'), 'pin polaczenia nie jest polaczony do wejsciowego pinu bramki');
+    ok(connectorAnchor.isConnectedTo('output'), 'pin polaczenia  jest polaczony do wyjsciowego pinu bramki');
+    ok(!connectorAnchor.isConnectedTo('clock'), 'pin polaczenia nie jest polaczony do zegarowego pinu bramki');
+
+    connectorAnchor.connectTo(gateClockAnchor);
+    ok(connectorAnchor.isConnectedTo(), 'pin polaczenia jest polaczony do dowolnego pinu bramki');
+    ok(!connectorAnchor.isConnectedTo('input'), 'pin polaczenia nie jest polaczony do wejsciowego pinu bramki');
+    ok(!connectorAnchor.isConnectedTo('output'), 'pin polaczenia nie jest polaczony do wyjsciowego pinu bramki');
+    ok(connectorAnchor.isConnectedTo('clock'), 'pin polaczenia jest polaczony do zegarowego pinu bramki');
+
 
 });
 
@@ -176,10 +215,117 @@ test( "Usuwanie polaczenia",10, function() {
 
     equal(gateAnchor1.getConnectors().length , 0, 'pin bramki1 nie powinien byc polaczony');
     equal(gateAnchor2.getConnectors().length , 0, 'pin bramki2 nie powinien byc polaczony');
+});
+
+module( "Logicjs symulacja" ,{
+    setup: function() {
+        this.stage = new logicjs.Workflow({
+            container: "container",
+            width: 500,
+            height: 200
+        });
+        this.layer = new Kinetic.Layer();
+        this.stage.add(this.layer);
+
+    },
+    teardown: function() {
+
+    }
+});
+
+test( "Ustawianie poziomu logicznego pinu zwyklego",12, function() {
+
+
+    var anchor = new logicjs.Anchor({});
+
+    this.layer.add(anchor);
+
+       anchor.setLogicState();
+    equal(anchor.getLogicState(), 'undefined', "ustawienie pustego parametru powinno dac stan niezdefiniowany");
+
+    anchor.setLogicState('high');
+    equal(anchor.getLogicState(), 'high', "ustawienie wysokiego stanu");
+
+    anchor.setLogicState('hightasd  as');
+    equal(anchor.getLogicState(), 'undefined', "ustawienie blednego stanu powinno zwracac stan niezdefiniowany");
+
+    anchor.setLogicState('low');
+    equal(anchor.getLogicState(), 'low', "ustawienie niskiego stanu");
+
+    anchor.setLogicState('undefined');
+    equal(anchor.getLogicState(), 'undefined', "ustawienie niezdefiniowanego stanu");
+
+    anchor.setLogicStateInt(NaN);
+    ok(_.isNaN(anchor.getLogicStateInt()), 'niezdefiniowany stan zwraca  liczbowo NaN');
+
+    anchor.setLogicStateInt(1);
+    equal(anchor.getLogicStateInt(),1, 'poziom wysoki  zwraca  liczbowo 1');
+
+    anchor.setLogicStateInt(0);
+    equal(anchor.getLogicStateInt(),0, 'poziom niski  liczbowo 0');
+
+    anchor.setLogicStateInt(1);
+    equal(anchor.getLogicState(),'high', 'ustawienie poziomu wysokiego liczbowo powinien dac \'high\'');
+
+    anchor.setLogicStateInt(0);
+    equal(anchor.getLogicState(),'low', 'ustawienie poziomu niskiego liczbowo powinien dac \'low\'');
+
+    anchor.setLogicState('high');
+    equal(anchor.getLogicStateInt(),1, 'ustawienie poziomu high  powinien dac liczbowo 1');
+
+    anchor.setLogicState('low');
+    equal(anchor.getLogicStateInt(),0, 'ustawienie poziomu low powinien dac liczbowo 0');
+
+
+});
+
+test( "Test funkcji logicznej bramki and",13, function() {
+
+
+    var and = new logicjs.And({});
+
+    this.layer.add(and);
+
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+
+    this.layer.add(connector);
+
+
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+    connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'undefined', 'low && undefined => undefined');
+    equal(connectorAnchor1.getLogicState(),outputAnchor.getLogicState(), 'pin1 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+    equal(connectorAnchor2.getLogicState(),outputAnchor.getLogicState(), 'pin2 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+
+
+    inputAnchors[1].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'low', 'low && low => low');
+    equal(connectorAnchor1.getLogicState(),outputAnchor.getLogicState(), 'pin1 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+    equal(connectorAnchor2.getLogicState(),outputAnchor.getLogicState(), 'pin2 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+
+
+    inputAnchors[1].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'low && high => low');
+    equal(connectorAnchor1.getLogicState(),outputAnchor.getLogicState(), 'pin1 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+    equal(connectorAnchor2.getLogicState(),outputAnchor.getLogicState(), 'pin2 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+
+
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'high', 'high && high => high');
+    equal(connectorAnchor1.getLogicState(),outputAnchor.getLogicState(), 'pin1 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+    equal(connectorAnchor2.getLogicState(),outputAnchor.getLogicState(), 'pin2 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
+
 
 
 
 
 });
-
 
