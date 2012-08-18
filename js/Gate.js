@@ -2,6 +2,7 @@ logicjs.Gate =  Kinetic.Group.extend({
     init: function(config) {
         this.oType = 'Gate';
         this.shapeType = 'Gate';
+        var that = this;
         // call super constructor
         this._super(config);
 //        this.add(new logicjs.Anchor({
@@ -31,9 +32,44 @@ logicjs.Gate =  Kinetic.Group.extend({
             console.log('pinchanged');
         });
 
+        this.on('click', function(e){
+             var isSelected = this.getStage().toggleSelectedItem(that);
+            if (isSelected){
+             that.getShape().setShadow({
+                color: 'blue',
+                blur: 10,
+                offset: [0, 0],
+                alpha: 1
+            });
+            }
+            else{
+                that.clearSelection();
+            }
+            that.getLayer().draw();
+
+            e.cancelBubble = true;
+
+        });
+
+        this.on('mouseover',function(){
+            $('body').css('cursor','pointer');
+        });
+
+        this.on('mouseout',function(){
+
+            $('body').css('cursor','default');
+
+
+        });
+
+
 
     },
 
+    clearSelection : function(){
+        this.getShape().setShadow(null);
+        this.getLayer().draw();
+    },
 
     /** @return  JSON z atrybutami*/
     toJSON: function(){
@@ -77,6 +113,15 @@ logicjs.Gate =  Kinetic.Group.extend({
     },
     getShape : function(){
         return _.first(this.get('.shape'));
+    },
+    eliminate : function(){
+        _.each(this.getAnchors(), function(anchor){
+            _.each(anchor.getConnectors(), function(connectorAnchor){
+                connectorAnchor.getParent().eliminate();
+            });
+
+        });
+        this.getLayer().remove(this);
     }
 
   });

@@ -53,8 +53,43 @@ logicjs.Connector =  Kinetic.Group.extend({
         });
         this.on('pinChanged', this.setLogicState);
 
+        this.on('mouseover',function(){
+            $('body').css('cursor','pointer');
+        });
+
+        this.on('mouseout',function(){
+
+            $('body').css('cursor','default');
+
+
+        });
+
+
+        this.on('click', function(e){
+            var isSelected = this.getStage().toggleSelectedItem(that);
+            if(isSelected){
+            that._getLine().setShadow({
+                color: 'blue',
+                blur: 10,
+                offset: [0, 0],
+                alpha: 0.7
+            });
+            }
+            else{
+                that.clearSelection();
+            }
+            that.getLayer().draw();
+            e.cancelBubble = true;
+
+        });
+
        _.bindAll(this,'setLogicState');
 
+    },
+
+    clearSelection : function(){
+        this._getLine().setShadow(null);
+        this.getLayer().draw();
     },
 
     setLogicState : function(){

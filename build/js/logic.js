@@ -27,6 +27,7 @@ logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group
     init: function(config) {
         this.oType = 'Gate';
         this.shapeType = 'Gate';
+        var that = this;
         // call super constructor
         this._super(config);
 //        this.add(new logicjs.Anchor({
@@ -56,9 +57,44 @@ logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group
             console.log('pinchanged');
         });
 
+        this.on('click', function(e){
+             var isSelected = this.getStage().toggleSelectedItem(that);
+            if (isSelected){
+             that.getShape().setShadow({
+                color: 'blue',
+                blur: 10,
+                offset: [0, 0],
+                alpha: 1
+            });
+            }
+            else{
+                that.clearSelection();
+            }
+            that.getLayer().draw();
+
+            e.cancelBubble = true;
+
+        });
+
+        this.on('mouseover',function(){
+            $('body').css('cursor','pointer');
+        });
+
+        this.on('mouseout',function(){
+
+            $('body').css('cursor','default');
+
+
+        });
+
+
 
     },
 
+    clearSelection : function(){
+        this.getShape().setShadow(null);
+        this.getLayer().draw();
+    },
 
     /** @return  JSON z atrybutami*/
     toJSON: function(){
@@ -102,6 +138,15 @@ logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group
     },
     getShape : function(){
         return _.first(this.get('.shape'));
+    },
+    eliminate : function(){
+        _.each(this.getAnchors(), function(anchor){
+            _.each(anchor.getConnectors(), function(connectorAnchor){
+                connectorAnchor.getParent().eliminate();
+            });
+            
+        });
+        this.getLayer().remove(this);
     }
 
   });
@@ -219,10 +264,15 @@ logicjs.And =  logicjs.Gate.extend({
                 context.lineTo(0, 0);
                 context.stroke();
                 context.fill();
+
+                this.stroke(context);
             },
             name : 'shape',
             x : 0,
-            y : 0
+            y : 0,
+            stroke : 'black',
+            strokeWidth : 1
+
         }));
        var  anchor = new logicjs.GateAnchor({
             name:'input',
@@ -318,8 +368,43 @@ logicjs.And =  logicjs.Gate.extend({
         });
         this.on('pinChanged', this.setLogicState);
 
+        this.on('mouseover',function(){
+            $('body').css('cursor','pointer');
+        });
+
+        this.on('mouseout',function(){
+
+            $('body').css('cursor','default');
+
+
+        });
+
+
+        this.on('click', function(e){
+            var isSelected = this.getStage().toggleSelectedItem(that);
+            if(isSelected){
+            that._getLine().setShadow({
+                color: 'blue',
+                blur: 10,
+                offset: [0, 0],
+                alpha: 0.7
+            });
+            }
+            else{
+                that.clearSelection();
+            }
+            that.getLayer().draw();
+            e.cancelBubble = true;
+
+        });
+
        _.bindAll(this,'setLogicState');
 
+    },
+
+    clearSelection : function(){
+        this._getLine().setShadow(null);
+        this.getLayer().draw();
     },
 
     setLogicState : function(){
@@ -358,7 +443,7 @@ logicjs.And =  logicjs.Gate.extend({
                 this._getLine().setStroke('black');
                 break;
         }
- 
+
 
 
 //        if (_.isObject(this.getStage())) this.getStage().draw();
@@ -620,10 +705,15 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
 
     /**
      *  Usuwa wybrane polaczenie
-     *  @param {logicjs.Connector} connector
+     *  @param {logicjs.Connector} connector; jezeli nie podany to usuwa wszystke polaczenia
      */
     disconnectFrom : function(connector){
+        if (arguments.length == 0){
+            this.getConnectors().splice(0,this.getConnectors().length);
+        }
+        else{
         this.getConnectors().splice(_.indexOf(this.getConnectors(),connector),1);
+        }
         if (this.getName()=='input'){
             this.setLogicState('undefined');
         }
@@ -732,6 +822,7 @@ logicjs.Switch =  logicjs.Gate.extend({
 });logicjs.Workflow =  Kinetic.Stage.extend({
     init: function(config) {
         this.setDefaultAttrs({
+                selectedItems : []
                // container : $('#container')
         });
 
@@ -750,6 +841,20 @@ logicjs.Switch =  logicjs.Gate.extend({
             id : 'connectorsLayer'
         }));
 
+        this.get('#mainLayer')[0].add(new Kinetic.Rect({
+           x : 0,
+           y : 0,
+           width : this.getAttrs().width,
+           height : this.getAttrs().height,
+           fill : 'white',
+           alpha : 0
+
+        }));
+
+        this.on('click', function(){
+            this.clearSelectedItems();
+            console.log('stage click');
+        });
     },
 
     addGate : function(coords,gate){
@@ -883,6 +988,44 @@ logicjs.Switch =  logicjs.Gate.extend({
         _.each(this.get('.connectorAnchor'),function(anchor){
             anchor.connectToHoverAnchor();
         });
+    },
+
+    removeSelectedItem: function(item){
+        this.getAttrs().selectedItems= _.without(this.getSelectedItems(), item);
+
+    },
+
+    addSelectedItem : function(item){
+        if(_.indexOf(this.getSelectedItems(),item) == -1){
+            this.getSelectedItems().push(item);
+        };
+    },
+    getSelectedItems : function(){
+        return this.getAttrs().selectedItems;
+    },
+
+    isSelectedItem : function(item){
+        return _.indexOf(this.getSelectedItems(),item) > -1;
+    },
+    toggleSelectedItem : function(item){
+       this.isSelectedItem(item) ? this.removeSelectedItem(item) : this.addSelectedItem(item);
+       return this.isSelectedItem(item);
+    },
+
+    deleteSelectedItems : function(){
+        _.each(this.getSelectedItems(),function(item){
+            this.removeSelectedItem(item);
+            item.eliminate();
+        },this);
+        this.draw();
+
+
+    },
+    clearSelectedItems : function(){
+        _.each(this.getSelectedItems(), function(item){
+           item.clearSelection();
+        });
+        this.draw();
     }
 
 })

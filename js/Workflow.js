@@ -1,6 +1,7 @@
 logicjs.Workflow =  Kinetic.Stage.extend({
     init: function(config) {
         this.setDefaultAttrs({
+                selectedItems : []
                // container : $('#container')
         });
 
@@ -19,6 +20,20 @@ logicjs.Workflow =  Kinetic.Stage.extend({
             id : 'connectorsLayer'
         }));
 
+        this.get('#mainLayer')[0].add(new Kinetic.Rect({
+           x : 0,
+           y : 0,
+           width : this.getAttrs().width,
+           height : this.getAttrs().height,
+           fill : 'white',
+           alpha : 0
+
+        }));
+
+        this.on('click', function(){
+            this.clearSelectedItems();
+            console.log('stage click');
+        });
     },
 
     addGate : function(coords,gate){
@@ -152,6 +167,44 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         _.each(this.get('.connectorAnchor'),function(anchor){
             anchor.connectToHoverAnchor();
         });
+    },
+
+    removeSelectedItem: function(item){
+        this.getAttrs().selectedItems= _.without(this.getSelectedItems(), item);
+
+    },
+
+    addSelectedItem : function(item){
+        if(_.indexOf(this.getSelectedItems(),item) == -1){
+            this.getSelectedItems().push(item);
+        };
+    },
+    getSelectedItems : function(){
+        return this.getAttrs().selectedItems;
+    },
+
+    isSelectedItem : function(item){
+        return _.indexOf(this.getSelectedItems(),item) > -1;
+    },
+    toggleSelectedItem : function(item){
+       this.isSelectedItem(item) ? this.removeSelectedItem(item) : this.addSelectedItem(item);
+       return this.isSelectedItem(item);
+    },
+
+    deleteSelectedItems : function(){
+        _.each(this.getSelectedItems(),function(item){
+            this.removeSelectedItem(item);
+            item.eliminate();
+        },this);
+        this.draw();
+
+
+    },
+    clearSelectedItems : function(){
+        _.each(this.getSelectedItems(), function(item){
+           item.clearSelection();
+        });
+        this.draw();
     }
 
 })

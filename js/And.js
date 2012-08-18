@@ -25,10 +25,15 @@ logicjs.And =  logicjs.Gate.extend({
                 context.lineTo(0, 0);
                 context.stroke();
                 context.fill();
+
+                this.stroke(context);
             },
             name : 'shape',
             x : 0,
-            y : 0
+            y : 0,
+            stroke : 'black',
+            strokeWidth : 1
+
         }));
        var  anchor = new logicjs.GateAnchor({
             name:'input',

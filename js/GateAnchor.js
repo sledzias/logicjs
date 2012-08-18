@@ -30,10 +30,15 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
 
     /**
      *  Usuwa wybrane polaczenie
-     *  @param {logicjs.Connector} connector
+     *  @param {logicjs.Connector} connector; jezeli nie podany to usuwa wszystke polaczenia
      */
     disconnectFrom : function(connector){
+        if (arguments.length == 0){
+            this.getConnectors().splice(0,this.getConnectors().length);
+        }
+        else{
         this.getConnectors().splice(_.indexOf(this.getConnectors(),connector),1);
+        }
         if (this.getName()=='input'){
             this.setLogicState('undefined');
         }

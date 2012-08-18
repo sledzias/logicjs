@@ -60,7 +60,7 @@
                 <li class="active">
                     <a href="#">Home</a>
                 </li>
-                <li><a href="#">Link</a></li>
+                <li><button class='btn btn-danger' id="removeSellectedBtn">Usuń zaznaczone</button></li>
                 <li><a href="#">Link</a></li>
             </ul>
         </div>
@@ -135,6 +135,12 @@
 //                    }
 
 
+            }
+        });
+
+        $('#removeSellectedBtn').click(function(){
+            {
+                workflow.deleteSelectedItems();
             }
         });
     });
