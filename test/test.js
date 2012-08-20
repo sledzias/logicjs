@@ -279,20 +279,23 @@ test( "Ustawianie poziomu logicznego pinu zwyklego",12, function() {
 
 });
 
+test( "Test funkcji logicjs.invertLogicState",5, function() {
+
+    equal(logicjs.invertLogicState(1),0,'1 => 0');
+    equal(logicjs.invertLogicState(0),1,'0 => 1');
+    ok(_.isNaN(logicjs.invertLogicState(NaN)),'NaN => NaN');
+    ok(_.isNaN(logicjs.invertLogicState('string')),'"string" => NaN');
+    equal(logicjs.invertLogicState(5),0,'5 => 0');
+
+});
+
 test( "Test funkcji logicznej bramki and",13, function() {
-
-
     var and = new logicjs.And({});
-
     this.layer.add(and);
-
     var connector = new logicjs.Connector({ points : [0,0,10,10]});
     var connectorAnchor1 = connector._getAnchors()[0];
     var connectorAnchor2 = connector._getAnchors()[1];
-
     this.layer.add(connector);
-
-
     var inputAnchors = and.getAnchors('input');
     var outputAnchor = _.first(and.getAnchors('output'));
 
@@ -322,10 +325,147 @@ test( "Test funkcji logicznej bramki and",13, function() {
     equal(outputAnchor.getLogicState(), 'high', 'high && high => high');
     equal(connectorAnchor1.getLogicState(),outputAnchor.getLogicState(), 'pin1 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
     equal(connectorAnchor2.getLogicState(),outputAnchor.getLogicState(), 'pin2 polaczenia ma taki sam stan jak pic wyjsciowy bramki');
-
-
-
-
-
 });
 
+test( "Test funkcji logicznej bramki or",5, function() {
+    var and = new logicjs.Or({});
+    this.layer.add(and);
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+    this.layer.add(connector);
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+    connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'undefined', 'low && undefined => undefined');
+    inputAnchors[1].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'low', 'low && low => low');
+    inputAnchors[1].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'high', 'low && high => high');
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'high', 'high && high => high');
+});
+
+test( "Test funkcji logicznej bramki nand",5, function() {
+    var and = new logicjs.Nand({});
+    this.layer.add(and);
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+    this.layer.add(connector);
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+    connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'undefined', 'low && undefined => undefined');
+    inputAnchors[1].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'high', 'low && low => high');
+    inputAnchors[1].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'high', 'low && high => high');
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'high && high => low');
+});
+
+test( "Test funkcji logicznej bramki nor",5, function() {
+    var and = new logicjs.Nor({});
+    this.layer.add(and);
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+    this.layer.add(connector);
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+    connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'undefined', 'low && undefined => undefined');
+    inputAnchors[1].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'high', 'low && low => high');
+    inputAnchors[1].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'low && high => low');
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'high && high => low');
+});
+
+test( "Test funkcji logicznej bramki xor",5, function() {
+    var and = new logicjs.Xor({});
+    this.layer.add(and);
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+    this.layer.add(connector);
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+    connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'undefined', 'low && undefined => undefined');
+    inputAnchors[1].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'low', 'low && low => low');
+    inputAnchors[1].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'high', 'low && high => high');
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'high && high => low');
+});
+
+test( "Test funkcji logicznej bramki nxor",5, function() {
+    var and = new logicjs.Nxor({});
+    this.layer.add(and);
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    var connectorAnchor2 = connector._getAnchors()[1];
+    this.layer.add(connector);
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+    connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'undefined', 'low && undefined => undefined');
+    inputAnchors[1].setLogicState('low');
+    equal(outputAnchor.getLogicState(), 'high', 'low && low => high');
+    inputAnchors[1].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'low && high => low');
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'high', 'high && high => high');
+});
+
+test( "Test funkcji logicznej bramki not",3, function() {
+    var and = new logicjs.Not({});
+    this.layer.add(and);
+    var connector = new logicjs.Connector({ points : [0,0,10,10]});
+    var connectorAnchor1 = connector._getAnchors()[0];
+    //var connectorAnchor2 = connector._getAnchors()[1];
+    this.layer.add(connector);
+    var inputAnchors = and.getAnchors('input');
+    var outputAnchor = _.first(and.getAnchors('output'));
+
+    connectorAnchor1.connectTo(outputAnchor);
+  //  connectorAnchor2.connectTo(outputAnchor);
+
+    equal(outputAnchor.getLogicState(), 'undefined', 'niezainicjowana bramka na wyjsciu ma undefined');
+    inputAnchors[0].setLogicState('low');
+
+
+    equal(outputAnchor.getLogicState(), 'high', 'low => high');
+
+    inputAnchors[0].setLogicState('high');
+    equal(outputAnchor.getLogicState(), 'low', 'high => low');
+});

@@ -23,7 +23,14 @@ logicjs._toJSON = function(node){
 };
 
 logicjs.logicStates = ['high', 'low', 'undefined'];
-logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group.extend({
+logicjs.gatePinTypes = ['input', 'output','clock'];
+
+logicjs.invertLogicState = function(state){
+       if (_.isNaN(state) || !_.isNumber(state)){
+           return NaN;
+       }
+       return state > 0 ? 0 : 1;
+};logicjs.Gate =  Kinetic.Group.extend({
     init: function(config) {
         this.oType = 'Gate';
         this.shapeType = 'Gate';
@@ -87,6 +94,11 @@ logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group
 
         });
 
+        this.on('rotationChange',function(){
+            this.simulate('dragmove');
+            this.getStage().draw();
+        });
+
 
 
     },
@@ -137,14 +149,16 @@ logicjs.gatePinTypes = ['input', 'output','clock'];logicjs.Gate =  Kinetic.Group
         });
     },
     getShape : function(){
-        return _.first(this.get('.shape'));
+        return _.first(_.filter(this.getChildren(),function(element){
+            return element.getName() == 'shape'
+        }));
     },
     eliminate : function(){
         _.each(this.getAnchors(), function(anchor){
             _.each(anchor.getConnectors(), function(connectorAnchor){
                 connectorAnchor.getParent().eliminate();
             });
-            
+
         });
         this.getLayer().remove(this);
     }
@@ -250,34 +264,21 @@ logicjs.And =  logicjs.Gate.extend({
         // call super constructor
 
 
-        this.add(new Kinetic.Shape({
-            drawFunc:function (context) {
-                context.fillStyle = 'white';
-                context.strokeStyle = 'black';
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(0, 0);
-                context.lineTo(30, 0);
-                context.arc(30, 30, 30, -Math.PI / 2, Math.PI / 2);
-                context.moveTo(30, 60);
-                context.lineTo(0, 60);
-                context.lineTo(0, 0);
-                context.stroke();
-                context.fill();
-
-                this.stroke(context);
-            },
+        this.add(new Kinetic.Path({
+            data : 'M 44.000001,44.094484 C 36.824001,44.094484 25,44.094486 25,44.094486 L 25,18.095913 L 44.000001,18.094485 C 51.176001,18.094485 57.000001,23.918484 57.000001,31.094484 C 57.000001,38.270485 51.176001,44.094484 44.000001,44.094484 z M 57,31.094485 L 66.056394,31.094485 M 16,24.594486 L 25.00006,24.594486 M 16,37.594484 L 25.00006,37.594484',
+            fill: 'white',
             name : 'shape',
-            x : 0,
-            y : 0,
+            x : -25,
+            y : -15,
             stroke : 'black',
-            strokeWidth : 1
+            strokeWidth : 1,
+            scale : [1.5,1.5]
 
         }));
        var  anchor = new logicjs.GateAnchor({
             name:'input',
             x : 0,
-            y : 20
+            y : 22
         });
         this.add(anchor);
 
@@ -291,8 +292,8 @@ logicjs.And =  logicjs.Gate.extend({
 
         this.add(new logicjs.GateAnchor({
             name:'output',
-            x : 60,
-            y : 30
+            x : 80,
+            y : 32
         }));
         this.calculateOutputs();
 
@@ -309,6 +310,87 @@ logicjs.And =  logicjs.Gate.extend({
         _.each(this.getAnchors('output'), function(anchor){
             anchor.setLogicStateInt(val);
         });
+    }
+
+
+
+});logicjs.Bulb =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0,
+            logicState : 0
+
+
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Bulb';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'm 388.99911,281.12 c -97.09359,-1.23472 -111.34892,90.69558 -109.55303,115.83883 1.80161,25.22294 9.03465,39.48689 33.22507,71.83804 18.63295,24.91881 26.9392,17.76298 26.93926,73.63403 0,8.08176 4.48992,16.16352 4.48992,16.16352 0,0 18.8575,17.95952 42.20486,17.06155 23.34736,-0.89797 44.89876,-15.2656 46.69476,-24.24534 1.7959,-8.97973 1.6993,-28.97787 8.0817,-52.98053 3.644,-13.70398 47.1176,-52.82453 53.8786,-87.10364 7.158,-36.29263 -7.9696,-128.97175 -105.96114,-130.20646 z',
+       //    data : 'M 44.000001,44.094484 C 36.824001,44.094484 25,44.094486 25,44.094486 L 25,18.095913 L 44.000001,18.094485 C 51.176001,18.094485 57.000001,23.918484 57.000001,31.094484 C 57.000001,38.270485 51.176001,44.094484 44.000001,44.094484 z M 57,31.094485 L 66.056394,31.094485 M 16,24.594486 L 25.00006,24.594486 M 16,37.594484 L 25.00006,37.594484',
+            name : 'shape',
+            x : 0,
+            y : 0,
+            fill : 'red',
+            stroke: 'black',
+            strokeWidth : 1,
+            //  scale : [1.5,1.5]
+            scale : [0.17,0.17]
+        }));
+
+
+
+
+
+
+
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'input',
+            x : 66,
+            y : 103
+        }));
+
+        this.on('click', function(){
+//            this.getAttrs().logicState = this.getAttrs().logicState == 1 ? 0 : 1;
+//            console.log(this.getShape());
+//            this.getAttrs().logicState == 1 ? this.getShape().setFill('green') :  this.getShape().setFill('red');
+//            this.calculateOutputs();
+//            this.getStage().draw();
+        });
+        this.calculateOutputs();
+
+
+    },
+
+    calculateOutputs : function(){
+        var val = _.first(this.getAnchors('input')).getLogicStateInt();
+
+        if(_.isNaN(val)){
+            this.getShape().setFill('black')
+        }
+        else{
+            val == 1 ? this.getShape().setFill('green') :  this.getShape().setFill('red');
+        }
+
+
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+
+            try{
+                this.getLayer().draw();
+            }
+        catch(e){
+
+        }
+
     }
 
 
@@ -605,7 +687,7 @@ logicjs.And =  logicjs.Gate.extend({
         this.setPosition(anchor.getAbsolutePosition());
         anchor.connectTo(this);
         this.setLogicState(anchor.getLogicState());
-        this.getParent().simulate('pinChange');
+        if (_.isObject(this.getParent()))  this.getParent().simulate('pinChange');
     },
 
     disconnectFrom : function(){
@@ -755,13 +837,423 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
 
 });
 
-logicjs.Switch =  logicjs.Gate.extend({
+logicjs.High =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'High';
+        // call super constructor
+
+
+        this.add(new Kinetic.Rect({
+            x: 0,
+            y:0,
+            width: 30,
+            height: 30,
+            name: 'shape',
+            fill : 'white',
+            stroke: 'black',
+            strokeWidth: 1
+        }));
+
+        this.add( new Kinetic.Text({
+            x: 5,
+            y: 5,
+            text: "1",
+            fontSize: 20,
+            fontFamily: "Calibri",
+            textFill: "black"
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 35,
+            y : 15
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(1);
+        });
+    }
+
+
+
+});logicjs.Low =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'High';
+        // call super constructor
+
+
+        this.add(new Kinetic.Rect({
+            x: 0,
+            y:0,
+            width: 30,
+            height: 30,
+            name: 'shape',
+            fill : 'white',
+            stroke: 'black',
+            strokeWidth: 1
+        }));
+
+        this.add( new Kinetic.Text({
+            x: 5,
+            y: 5,
+            text: "0",
+            fontSize: 20,
+            fontFamily: "Calibri",
+            textFill: "black"
+        }));
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 35,
+            y : 15
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(0);
+        });
+    }
+
+
+
+});logicjs.Nand =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Or';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'M 114,44.09448 C 106.824,44.09448 95,44.094482 95,44.094482 L 95,18.095909 L 114,18.094481 C 121.176,18.094481 127,23.91848 127,31.09448 C 127,38.270481 121.176,44.09448 114,44.09448 z M 131,31.094482 C 131,32.198482 130.104,33.094482 129,33.094482 C 127.896,33.094482 127,32.198482 127,31.094482 C 127,29.990482 127.896,29.094482 129,29.094482 C 130.104,29.094482 131,29.990482 131,31.094482 z M 130.9997,31.094481 L 139.99976,31.094481 M 86,24.594478 L 95.00006,24.594478 M 86,37.594476 L 95.00006,37.594476',
+            fill: 'white',
+            name : 'shape',
+            x : -130,
+            y : -15,
+            stroke : 'black',
+            strokeWidth : 1,
+            scale : [1.5,1.5]
+
+        }));
+        var  anchor = new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 22
+        });
+        this.add(anchor);
+
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 40
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 80,
+            y : 32
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
+            console.log(memo);
+            return memo * anchor.getLogicStateInt();
+        },1);
+        val = logicjs.invertLogicState(val);
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});logicjs.Nor =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Or';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'M 95,77.094482 L 95,77.156982 C 97.19873,80.972154 98.46875,85.377694 98.46875,90.094482 C 98.46875,94.81127 97.19873,99.21681 95,103.03199 L 95,103.09449 L 98.46875,103.09449 L 108.46875,103.09449 C 118.07946,103.09449 126.46882,97.855186 130.96875,90.094482 C 126.46882,82.333779 118.07946,77.094483 108.46875,77.094482 L 98.46875,77.094482 L 95,77.094482 z M 135,90.094848 C 135,91.198848 134.104,92.094848 133,92.094848 C 131.896,92.094848 131,91.198848 131,90.094848 C 131,88.990848 131.896,88.094848 133,88.094848 C 134.104,88.094848 135,88.990848 135,90.094848 z M 134.99973,90.094481 L 144.00032,90.094481 M 88.5,83.594487 L 97.50006,83.594487 M 88.5,96.594485 L 97.50006,96.594485',
+            fill: 'white',
+            name : 'shape',
+            x : -132,
+            y : -103,
+            stroke : 'black',
+            strokeWidth : 1,
+            scale : [1.5,1.5]
+
+        }));
+        var  anchor = new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 22
+        });
+        this.add(anchor);
+
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 40
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 80,
+            y : 32
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
+            memo += anchor.getLogicStateInt();
+            if (_.isNaN(memo)) return NaN;
+            else{
+                return (memo + anchor.getLogicStateInt() > 0) ? 1 : 0;
+            }
+
+        },0);
+        val = logicjs.invertLogicState(val);
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});logicjs.Not =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Not';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'M 48.499947,208.09448 C 48.499947,209.19848 47.603947,210.09448 46.499948,210.09448 C 45.395948,210.09448 44.499948,209.19848 44.499948,208.09448 C 44.499948,206.99048 45.395948,206.09448 46.499948,206.09448 C 47.603947,206.09448 48.499947,206.99048 48.499947,208.09448 z M 25,219.09448 L 25,197.09448 L 43.985582,208.09448 L 25,219.09448 z M 48.5,208.09448 L 57.50006,208.09448 M 16,208.09448 L 25.00006,208.09448',
+            fill: 'white',
+            name : 'shape',
+            x : -20,
+            y : -292,
+            stroke : 'black',
+            strokeWidth : 1,
+            scale : [1.5,1.5]
+
+        }));
+        var  anchor = new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 20
+        });
+        this.add(anchor);
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 70,
+            y : 20
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+
+        var val = _.first(this.getAnchors('input')).getLogicStateInt();
+        val = logicjs.invertLogicState(val);
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});logicjs.Nxor =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Or';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'M 100,136.09448 L 100,136.15698 C 102.19873,139.97215 103.46875,144.37769 103.46875,149.09448 C 103.46875,153.81127 102.19873,158.21681 100,162.03198 L 100,162.09448 L 103.46875,162.09448 L 113.46875,162.09448 C 123.07946,162.09448 131.46882,156.85518 135.96875,149.09448 C 131.46882,141.33378 123.07946,136.09448 113.46875,136.09448 L 103.46875,136.09448 L 100,136.09448 z M 95,136.15698 C 97.19873,139.97215 98.46875,144.37769 98.46875,149.09448 C 98.46875,153.81127 97.19873,158.21681 95,162.03198 M 140,149.09521 C 140,150.19921 139.104,151.09521 138,151.09521 C 136.896,151.09521 136,150.19921 136,149.09521 C 136,147.99121 136.896,147.09521 138,147.09521 C 139.104,147.09521 140,147.99121 140,149.09521 z M 140,149.0945 L 149.00006,149.0945 M 88.5,142.59448 L 97.50006,142.59448 M 88.5,155.59448 L 97.50006,155.59448',
+            fill: 'white',
+            name : 'shape',
+            x : -135,
+            y : -192,
+            stroke : 'black',
+            strokeWidth : 1,
+            scale : [1.5,1.5]
+
+        }));
+        var  anchor = new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 22
+        });
+        this.add(anchor);
+
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 40
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 84,
+            y : 32
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        var a1 = _.first(this.getAnchors('input')).getLogicStateInt();
+        var a2 = _.last(this.getAnchors('input')).getLogicStateInt();
+        var val;
+        if (_.isNaN(a1) || _.isNaN(a2)){
+            val = NaN;
+        }
+        else{
+            val = a1 == a2 ? 0 : 1;
+        }
+        val = logicjs.invertLogicState(val);
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});logicjs.Or =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Or';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'M 25,77.094505 L 25,77.157005 C 27.198731,80.972177 28.46875,85.377717 28.46875,90.094505 C 28.46875,94.811293 27.198731,99.216833 25,103.03202 L 25,103.09452 L 28.46875,103.09452 L 38.46875,103.09452 C 48.079465,103.09452 56.468823,97.855209 60.96875,90.094505 C 56.468824,82.333802 48.079464,77.094506 38.46875,77.094505 L 28.46875,77.094505 L 25,77.094505 z M 60.999719,90.094512 L 70.000279,90.094512 M 18.5,83.594514 L 27.50006,83.594514 M 18.5,96.594512 L 27.50006,96.594512',
+            fill: 'white',
+            name : 'shape',
+            x : -25,
+            y : -103,
+            stroke : 'black',
+            strokeWidth : 1,
+            scale : [1.5,1.5]
+
+        }));
+        var  anchor = new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 22
+        });
+        this.add(anchor);
+
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 40
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 80,
+            y : 32
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
+            memo += anchor.getLogicStateInt();
+            if (_.isNaN(memo)) return NaN;
+            else{
+                return (memo + anchor.getLogicStateInt() > 0) ? 1 : 0;
+            }
+
+        },0);
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});logicjs.Switch =  logicjs.Gate.extend({
     init: function(config) {
         this.setDefaultAttrs({
             draggable:true,
             x:0,
             y:0,
             logicState : 0
+
 
         });
         this._super(config);
@@ -770,42 +1262,53 @@ logicjs.Switch =  logicjs.Gate.extend({
         // call super constructor
 
 
-        this.add(new Kinetic.Shape({
-            drawFunc:function (context) {
-                context.fillStyle = this.attrs.fill;
-                context.strokeStyle = 'black';
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(0, 0);
-                context.lineTo(30, 0);
-                context.arc(30, 30, 30, -Math.PI / 2, Math.PI / 2);
-                context.moveTo(30, 60);
-                context.lineTo(0, 60);
-                context.lineTo(0, 0);
-                context.stroke();
-                context.fill();
-            },
-            name : 'shape',
-            x : 0,
-            y : 0,
-            fill : 'red'
-
+        this.add(new Kinetic.Rect({
+            x: 0,
+            y:0,
+            width: 30,
+            height: 30,
+            name: 'shape',
+            fill : 'white',
+            stroke: 'black',
+            strokeWidth: 1
         }));
+
+        var button = new Kinetic.Circle({
+            radius: 10,
+            name : 'button',
+            x : 15,
+            y : 15,
+            fill : 'red',
+            strokeWidth : 1,
+            stroke : 1
+
+        });
+        this.add(button);
+
+
+
+
+
+
+
+
 
         this.add(new logicjs.GateAnchor({
             name:'output',
-            x : 60,
-            y : 30
+            x : 35,
+            y : 15
         }));
 
-        this.on('click', function(){
-            this.getAttrs().logicState = this.getAttrs().logicState == 1 ? 0 : 1;
-            console.log(this.getShape());
-            this.getAttrs().logicState == 1 ? this.getShape().setFill('green') :  this.getShape().setFill('red');
-            this.calculateOutputs();
+        button.on('click', function(e){
+            this.getParent().getAttrs().logicState = this.getParent().getAttrs().logicState == 1 ? 0 : 1;
+            //console.log(this.getShape());
+            this.getParent().getAttrs().logicState == 1 ? button.setFill('green') :  button.setFill('red');
+            this.getParent().calculateOutputs();
             this.getStage().draw();
+            e.cancelBubble = true;
         });
         this.calculateOutputs();
+
 
     },
 
@@ -1024,9 +1527,92 @@ logicjs.Switch =  logicjs.Gate.extend({
     clearSelectedItems : function(){
         _.each(this.getSelectedItems(), function(item){
            item.clearSelection();
-        });
+           this.removeSelectedItem(item);
+        },this);
         this.draw();
+    },
+    rotateLeftSelectedItems : function(){
+        _.each(this.getSelectedItems(),function(item){
+            if(item.oType != 'Connector'){
+                item.setRotationDeg(item.getRotationDeg() - 90);
+            }
+        });
+
+    },
+
+    rotateRightSelectedItems : function(){
+        _.each(this.getSelectedItems(),function(item){
+            if(item.oType != 'Connector'){
+                item.setRotationDeg(item.getRotationDeg() + 90);
+            }
+        });
     }
 
 })
 
+logicjs.Xor =  logicjs.Gate.extend({
+    init: function(config) {
+        this.setDefaultAttrs({
+            draggable:true,
+            x:0,
+            y:0
+        });
+        this._super(config);
+        this.oType = 'Gate';
+        this.nodeType = 'Or';
+        // call super constructor
+
+
+        this.add(new Kinetic.Path({
+            data : 'M 30,136.09446 L 30,136.15696 C 32.198731,139.97213 33.46875,144.37767 33.46875,149.09446 C 33.46875,153.81125 32.198731,158.21679 30,162.03196 L 30,162.09446 L 33.46875,162.09446 L 43.46875,162.09446 C 53.079465,162.09446 61.468823,156.85516 65.96875,149.09446 C 61.468824,141.33376 53.079464,136.09446 43.46875,136.09446 L 33.46875,136.09446 L 30,136.09446 z M 25,136.15696 C 27.198731,139.97213 28.46875,144.37767 28.46875,149.09446 C 28.46875,153.81125 27.198731,158.21679 25,162.03196 M 65.999971,149.09448 L 75.000027,149.09448 M 18.5,142.59446 L 27.50006,142.59446 M 18.5,155.59446 L 27.50006,155.59446',
+            fill: 'white',
+            name : 'shape',
+            x : -28,
+            y : -192,
+            stroke : 'black',
+            strokeWidth : 1,
+            scale : [1.5,1.5]
+
+        }));
+        var  anchor = new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 22
+        });
+        this.add(anchor);
+
+
+
+        this.add(new logicjs.GateAnchor({
+            name:'input',
+            x : 0,
+            y : 40
+        }));
+
+        this.add(new logicjs.GateAnchor({
+            name:'output',
+            x : 80,
+            y : 32
+        }));
+        this.calculateOutputs();
+
+    },
+
+    calculateOutputs : function(){
+        var a1 = _.first(this.getAnchors('input')).getLogicStateInt();
+        var a2 = _.last(this.getAnchors('input')).getLogicStateInt();
+        var val;
+        if (_.isNaN(a1) || _.isNaN(a2)){
+            val = NaN;
+        }
+        else{
+            val = a1 == a2 ? 0 : 1;
+        }
+        _.each(this.getAnchors('output'), function(anchor){
+            anchor.setLogicStateInt(val);
+        });
+    }
+
+
+
+});

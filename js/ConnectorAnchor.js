@@ -74,7 +74,7 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         this.setPosition(anchor.getAbsolutePosition());
         anchor.connectTo(this);
         this.setLogicState(anchor.getLogicState());
-        this.getParent().simulate('pinChange');
+        if (_.isObject(this.getParent()))  this.getParent().simulate('pinChange');
     },
 
     disconnectFrom : function(){

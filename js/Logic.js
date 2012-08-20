@@ -24,3 +24,10 @@ logicjs._toJSON = function(node){
 
 logicjs.logicStates = ['high', 'low', 'undefined'];
 logicjs.gatePinTypes = ['input', 'output','clock'];
+
+logicjs.invertLogicState = function(state){
+       if (_.isNaN(state) || !_.isNumber(state)){
+           return NaN;
+       }
+       return state > 0 ? 0 : 1;
+};

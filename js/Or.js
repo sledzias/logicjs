@@ -1,4 +1,4 @@
-logicjs.And =  logicjs.Gate.extend({
+logicjs.Or =  logicjs.Gate.extend({
     init: function(config) {
         this.setDefaultAttrs({
             draggable:true,
@@ -7,22 +7,22 @@ logicjs.And =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'And';
+        this.nodeType = 'Or';
         // call super constructor
 
 
         this.add(new Kinetic.Path({
-            data : 'M 44.000001,44.094484 C 36.824001,44.094484 25,44.094486 25,44.094486 L 25,18.095913 L 44.000001,18.094485 C 51.176001,18.094485 57.000001,23.918484 57.000001,31.094484 C 57.000001,38.270485 51.176001,44.094484 44.000001,44.094484 z M 57,31.094485 L 66.056394,31.094485 M 16,24.594486 L 25.00006,24.594486 M 16,37.594484 L 25.00006,37.594484',
+            data : 'M 25,77.094505 L 25,77.157005 C 27.198731,80.972177 28.46875,85.377717 28.46875,90.094505 C 28.46875,94.811293 27.198731,99.216833 25,103.03202 L 25,103.09452 L 28.46875,103.09452 L 38.46875,103.09452 C 48.079465,103.09452 56.468823,97.855209 60.96875,90.094505 C 56.468824,82.333802 48.079464,77.094506 38.46875,77.094505 L 28.46875,77.094505 L 25,77.094505 z M 60.999719,90.094512 L 70.000279,90.094512 M 18.5,83.594514 L 27.50006,83.594514 M 18.5,96.594512 L 27.50006,96.594512',
             fill: 'white',
             name : 'shape',
             x : -25,
-            y : -15,
+            y : -103,
             stroke : 'black',
             strokeWidth : 1,
             scale : [1.5,1.5]
 
         }));
-       var  anchor = new logicjs.GateAnchor({
+        var  anchor = new logicjs.GateAnchor({
             name:'input',
             x : 0,
             y : 22
@@ -47,13 +47,14 @@ logicjs.And =  logicjs.Gate.extend({
     },
 
     calculateOutputs : function(){
-        console.log('And: calculateOutputs');
         var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
-            console.log(memo);
-            return memo * anchor.getLogicStateInt();
-        },1);
-        console.log(val);
+            memo += anchor.getLogicStateInt();
+            if (_.isNaN(memo)) return NaN;
+            else{
+                return (memo + anchor.getLogicStateInt() > 0) ? 1 : 0;
+            }
 
+        },0);
         _.each(this.getAnchors('output'), function(anchor){
             anchor.setLogicStateInt(val);
         });

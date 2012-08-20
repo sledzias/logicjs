@@ -1,4 +1,4 @@
-logicjs.And =  logicjs.Gate.extend({
+logicjs.Nand =  logicjs.Gate.extend({
     init: function(config) {
         this.setDefaultAttrs({
             draggable:true,
@@ -7,22 +7,22 @@ logicjs.And =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'And';
+        this.nodeType = 'Or';
         // call super constructor
 
 
         this.add(new Kinetic.Path({
-            data : 'M 44.000001,44.094484 C 36.824001,44.094484 25,44.094486 25,44.094486 L 25,18.095913 L 44.000001,18.094485 C 51.176001,18.094485 57.000001,23.918484 57.000001,31.094484 C 57.000001,38.270485 51.176001,44.094484 44.000001,44.094484 z M 57,31.094485 L 66.056394,31.094485 M 16,24.594486 L 25.00006,24.594486 M 16,37.594484 L 25.00006,37.594484',
+            data : 'M 114,44.09448 C 106.824,44.09448 95,44.094482 95,44.094482 L 95,18.095909 L 114,18.094481 C 121.176,18.094481 127,23.91848 127,31.09448 C 127,38.270481 121.176,44.09448 114,44.09448 z M 131,31.094482 C 131,32.198482 130.104,33.094482 129,33.094482 C 127.896,33.094482 127,32.198482 127,31.094482 C 127,29.990482 127.896,29.094482 129,29.094482 C 130.104,29.094482 131,29.990482 131,31.094482 z M 130.9997,31.094481 L 139.99976,31.094481 M 86,24.594478 L 95.00006,24.594478 M 86,37.594476 L 95.00006,37.594476',
             fill: 'white',
             name : 'shape',
-            x : -25,
+            x : -130,
             y : -15,
             stroke : 'black',
             strokeWidth : 1,
             scale : [1.5,1.5]
 
         }));
-       var  anchor = new logicjs.GateAnchor({
+        var  anchor = new logicjs.GateAnchor({
             name:'input',
             x : 0,
             y : 22
@@ -47,13 +47,11 @@ logicjs.And =  logicjs.Gate.extend({
     },
 
     calculateOutputs : function(){
-        console.log('And: calculateOutputs');
         var val = _.reduce(this.getAnchors('input'), function(memo, anchor){
             console.log(memo);
             return memo * anchor.getLogicStateInt();
         },1);
-        console.log(val);
-
+        val = logicjs.invertLogicState(val);
         _.each(this.getAnchors('output'), function(anchor){
             anchor.setLogicStateInt(val);
         });

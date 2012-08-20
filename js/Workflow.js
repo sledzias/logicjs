@@ -203,8 +203,25 @@ logicjs.Workflow =  Kinetic.Stage.extend({
     clearSelectedItems : function(){
         _.each(this.getSelectedItems(), function(item){
            item.clearSelection();
-        });
+           this.removeSelectedItem(item);
+        },this);
         this.draw();
+    },
+    rotateLeftSelectedItems : function(){
+        _.each(this.getSelectedItems(),function(item){
+            if(item.oType != 'Connector'){
+                item.setRotationDeg(item.getRotationDeg() - 90);
+            }
+        });
+
+    },
+
+    rotateRightSelectedItems : function(){
+        _.each(this.getSelectedItems(),function(item){
+            if(item.oType != 'Connector'){
+                item.setRotationDeg(item.getRotationDeg() + 90);
+            }
+        });
     }
 
 })

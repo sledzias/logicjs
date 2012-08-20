@@ -6,6 +6,7 @@ logicjs.Switch =  logicjs.Gate.extend({
             y:0,
             logicState : 0
 
+
         });
         this._super(config);
         this.oType = 'Gate';
@@ -13,42 +14,53 @@ logicjs.Switch =  logicjs.Gate.extend({
         // call super constructor
 
 
-        this.add(new Kinetic.Shape({
-            drawFunc:function (context) {
-                context.fillStyle = this.attrs.fill;
-                context.strokeStyle = 'black';
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(0, 0);
-                context.lineTo(30, 0);
-                context.arc(30, 30, 30, -Math.PI / 2, Math.PI / 2);
-                context.moveTo(30, 60);
-                context.lineTo(0, 60);
-                context.lineTo(0, 0);
-                context.stroke();
-                context.fill();
-            },
-            name : 'shape',
-            x : 0,
-            y : 0,
-            fill : 'red'
-
+        this.add(new Kinetic.Rect({
+            x: 0,
+            y:0,
+            width: 30,
+            height: 30,
+            name: 'shape',
+            fill : 'white',
+            stroke: 'black',
+            strokeWidth: 1
         }));
+
+        var button = new Kinetic.Circle({
+            radius: 10,
+            name : 'button',
+            x : 15,
+            y : 15,
+            fill : 'red',
+            strokeWidth : 1,
+            stroke : 1
+
+        });
+        this.add(button);
+
+
+
+
+
+
+
+
 
         this.add(new logicjs.GateAnchor({
             name:'output',
-            x : 60,
-            y : 30
+            x : 35,
+            y : 15
         }));
 
-        this.on('click', function(){
-            this.getAttrs().logicState = this.getAttrs().logicState == 1 ? 0 : 1;
-            console.log(this.getShape());
-            this.getAttrs().logicState == 1 ? this.getShape().setFill('green') :  this.getShape().setFill('red');
-            this.calculateOutputs();
+        button.on('click', function(e){
+            this.getParent().getAttrs().logicState = this.getParent().getAttrs().logicState == 1 ? 0 : 1;
+            //console.log(this.getShape());
+            this.getParent().getAttrs().logicState == 1 ? button.setFill('green') :  button.setFill('red');
+            this.getParent().calculateOutputs();
             this.getStage().draw();
+            e.cancelBubble = true;
         });
         this.calculateOutputs();
+
 
     },
 

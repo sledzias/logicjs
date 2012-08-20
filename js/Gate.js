@@ -62,6 +62,11 @@ logicjs.Gate =  Kinetic.Group.extend({
 
         });
 
+        this.on('rotationChange',function(){
+            this.simulate('dragmove');
+            this.getStage().draw();
+        });
+
 
 
     },
@@ -112,7 +117,9 @@ logicjs.Gate =  Kinetic.Group.extend({
         });
     },
     getShape : function(){
-        return _.first(this.get('.shape'));
+        return _.first(_.filter(this.getChildren(),function(element){
+            return element.getName() == 'shape'
+        }));
     },
     eliminate : function(){
         _.each(this.getAnchors(), function(anchor){
