@@ -10,7 +10,8 @@ logicjs.Switch =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Switch';
+        this.shapeType = 'Switch';
+
         // call super constructor
 
 
@@ -52,6 +53,7 @@ logicjs.Switch =  logicjs.Gate.extend({
         }));
 
         button.on('click', function(e){
+            console.log('switch click');
             this.getParent().getAttrs().logicState = this.getParent().getAttrs().logicState == 1 ? 0 : 1;
             //console.log(this.getShape());
             this.getParent().getAttrs().logicState == 1 ? button.setFill('green') :  button.setFill('red');

@@ -7,7 +7,7 @@ logicjs.Not =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Not';
+        this.shapeType = 'Not';
         // call super constructor
 
 

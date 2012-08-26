@@ -32,11 +32,13 @@ logicjs.invertLogicState = function(state){
        return state > 0 ? 0 : 1;
 };logicjs.Gate =  Kinetic.Group.extend({
     init: function(config) {
-        this.oType = 'Gate';
-        this.shapeType = 'Gate';
+
         var that = this;
         // call super constructor
         this._super(config);
+        this.oType = 'Gate';
+        this.shapeType = 'Gate';
+        this.nodeType = 'Gate';
 //        this.add(new logicjs.Anchor({
 //            name:'input',
 //            x : 0,
@@ -260,7 +262,7 @@ logicjs.And =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'And';
+        this.shapeType = 'And';
         // call super constructor
 
 
@@ -326,7 +328,7 @@ logicjs.And =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Bulb';
+        this.shapeType = 'Bulb';
         // call super constructor
 
 
@@ -846,7 +848,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'High';
+        this.shapeType = 'High';
         // call super constructor
 
 
@@ -896,7 +898,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'High';
+        this.shapeType = 'Low';
         // call super constructor
 
 
@@ -947,7 +949,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = 'Nand';
         // call super constructor
 
 
@@ -1008,7 +1010,8 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = "Nor";
+       // this.nodeType = 'Nor';
         // call super constructor
 
 
@@ -1073,7 +1076,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Not';
+        this.shapeType = 'Not';
         // call super constructor
 
 
@@ -1125,7 +1128,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = 'Nxor';
         // call super constructor
 
 
@@ -1191,7 +1194,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = 'Or';
         // call super constructor
 
 
@@ -1258,7 +1261,8 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Switch';
+        this.shapeType = 'Switch';
+
         // call super constructor
 
 
@@ -1300,6 +1304,7 @@ logicjs.High =  logicjs.Gate.extend({
         }));
 
         button.on('click', function(e){
+            console.log('switch click');
             this.getParent().getAttrs().logicState = this.getParent().getAttrs().logicState == 1 ? 0 : 1;
             //console.log(this.getShape());
             this.getParent().getAttrs().logicState == 1 ? button.setFill('green') :  button.setFill('red');
@@ -1412,6 +1417,7 @@ logicjs.High =  logicjs.Gate.extend({
             obj.shapeType = node.shapeType;
 
             if(node.nodeType !== 'Shape') {
+
                 obj.children = [];
 
                 var children = node.getChildren();
@@ -1467,10 +1473,19 @@ logicjs.High =  logicjs.Gate.extend({
                    catch(e){
                         console.log(type);
 
-                       var no = new logicjs[type](child.attrs);
-                       if (type == 'Connector'){
-                           no.removeChildren();
+                       if (type == 'Gate') {
+                           type = child.shapeType;
+                           child.children=[];
                        }
+                           var no = new logicjs[type](child.attrs);
+
+                       if (child.nodeType == 'Connector'){
+
+                           no.removeChildren();
+
+                       }
+
+
 
 
                    }
@@ -1559,7 +1574,7 @@ logicjs.Xor =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = 'Xor';
         // call super constructor
 
 

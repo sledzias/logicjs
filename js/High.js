@@ -7,7 +7,7 @@ logicjs.High =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'High';
+        this.shapeType = 'High';
         // call super constructor
 
 

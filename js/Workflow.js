@@ -88,6 +88,7 @@ logicjs.Workflow =  Kinetic.Stage.extend({
             obj.shapeType = node.shapeType;
 
             if(node.nodeType !== 'Shape') {
+
                 obj.children = [];
 
                 var children = node.getChildren();
@@ -143,10 +144,19 @@ logicjs.Workflow =  Kinetic.Stage.extend({
                    catch(e){
                         console.log(type);
 
-                       var no = new logicjs[type](child.attrs);
-                       if (type == 'Connector'){
-                           no.removeChildren();
+                       if (type == 'Gate') {
+                           type = child.shapeType;
+                           child.children=[];
                        }
+                           var no = new logicjs[type](child.attrs);
+
+                       if (child.nodeType == 'Connector'){
+
+                           no.removeChildren();
+
+                       }
+
+
 
 
                    }

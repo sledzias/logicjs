@@ -1,10 +1,12 @@
 logicjs.Gate =  Kinetic.Group.extend({
     init: function(config) {
-        this.oType = 'Gate';
-        this.shapeType = 'Gate';
+
         var that = this;
         // call super constructor
         this._super(config);
+        this.oType = 'Gate';
+        this.shapeType = 'Gate';
+        this.nodeType = 'Gate';
 //        this.add(new logicjs.Anchor({
 //            name:'input',
 //            x : 0,

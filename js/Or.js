@@ -7,7 +7,7 @@ logicjs.Or =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = 'Or';
         // call super constructor
 
 

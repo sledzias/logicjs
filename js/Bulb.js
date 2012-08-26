@@ -10,7 +10,7 @@ logicjs.Bulb =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Bulb';
+        this.shapeType = 'Bulb';
         // call super constructor
 
 

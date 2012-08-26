@@ -7,7 +7,7 @@ logicjs.Nand =  logicjs.Gate.extend({
         });
         this._super(config);
         this.oType = 'Gate';
-        this.nodeType = 'Or';
+        this.shapeType = 'Nand';
         // call super constructor
 
 
