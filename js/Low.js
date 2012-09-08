@@ -1,5 +1,5 @@
-logicjs.Low =  logicjs.Gate.extend({
-    init: function(config) {
+logicjs.Low = logicjs.Gate.extend({
+    init:function (config) {
         this.setDefaultAttrs({
             draggable:true,
             x:0,
@@ -8,41 +8,38 @@ logicjs.Low =  logicjs.Gate.extend({
         this._super(config);
         this.oType = 'Gate';
         this.shapeType = 'Low';
-        // call super constructor
-
-
         this.add(new Kinetic.Rect({
-            x: 0,
+            x:0,
             y:0,
-            width: 30,
-            height: 30,
-            name: 'shape',
-            fill : 'white',
-            stroke: 'black',
-            strokeWidth: 1
+            width:30,
+            height:30,
+            name:'shape',
+            fill:'white',
+            stroke:'black',
+            strokeWidth:1
         }));
 
-        this.add( new Kinetic.Text({
-            x: 5,
-            y: 5,
-            text: "0",
-            fontSize: 20,
-            fontFamily: "Calibri",
-            textFill: "black"
+        this.add(new Kinetic.Text({
+            x:5,
+            y:5,
+            text:"0",
+            fontSize:20,
+            fontFamily:"Calibri",
+            textFill:"black"
         }));
 
 
         this.add(new logicjs.GateAnchor({
             name:'output',
-            x : 35,
-            y : 15
+            x:35,
+            y:15
         }));
         this.calculateOutputs();
 
     },
 
-    calculateOutputs : function(){
-        _.each(this.getAnchors('output'), function(anchor){
+    calculateOutputs:function () {
+        _.each(this.getAnchors('output'), function (anchor) {
             anchor.setLogicStateInt(0);
         });
     }

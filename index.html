@@ -7,21 +7,12 @@
 
 
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <!--    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">-->
-
-    <!--    <script type="text/css" src="bootstrap/css/bootstrap-responsive.css"></script>-->
-
     <script type="text/javascript" src="libs/jquery-1.7.2.js"></script>
     <script type="text/javascript" src="libs/underscore.js"></script>
-    <!--   <script type="text/javascript" src="kinetic-v3.8.1.js"></script>    -->
     <script type="text/javascript" src="libs/kinetic-v3.10.5.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="build/js/logic.js"></script>
     <script type="text/javascript" src="libs/jquery-ui-1.8.20.custom.min.js"></script>
-    <!--<scripthttp://www.youtube.com/watch?v=F6ZfA5QZDHY type="text/javascript" src="jCanvaScript.js"></script>    -->
-
-
-
     <style type="text/css">
         .Gate, .Gate:hover {
             width: 100px;
@@ -33,22 +24,27 @@
         }
 
         .Gate[gate=And] {
-            background: url(img/gates/and.png) no-repeat ;
+            background: url(img/gates/and.png) no-repeat;
         }
+
         .Gate[gate=Nand] {
-            background: url(img/gates/nand.png) no-repeat ;
+            background: url(img/gates/nand.png) no-repeat;
         }
+
         .Gate[gate=Nor] {
-            background: url(img/gates/nor.png) no-repeat ;
+            background: url(img/gates/nor.png) no-repeat;
         }
+
         .Gate[gate=Xor] {
-            background: url(img/gates/xor.png) no-repeat ;
+            background: url(img/gates/xor.png) no-repeat;
         }
+
         .Gate[gate=Nxor] {
-            background: url(img/gates/nxor.png) no-repeat ;
+            background: url(img/gates/nxor.png) no-repeat;
         }
+
         .Gate[gate=Not] {
-            background: url(img/gates/not.png) no-repeat ;
+            background: url(img/gates/not.png) no-repeat;
         }
 
         .Gate[gate=Or] {
@@ -62,9 +58,11 @@
         .Gate[gate=Bulb] {
             background: url(img/gates/bulb.png) no-repeat;
         }
+
         .Gate[gate=High] {
             background: url(img/gates/high.png) no-repeat;
         }
+
         .Gate[gate=Low] {
             background: url(img/gates/low.png) no-repeat;
         }
@@ -83,8 +81,11 @@
                 </li>
 
                 <li><a href="#" class='' id="removeSellectedBtn"><i class=' icon-trash icon-white'></i> Usuń</a></li>
-                <li><a href="#" class='' id="rotateLeftBtn" ><i class='icon-repeat icon-white' style="-webkit-transform:scaleX(-1); -moz-transform: scaleX(-1);-o-transform: scaleX(-1)"></i> Obróć w lewo</a></li>
-                <li><a href="#" class='' id="rotateRightBtn" ><i class='icon-repeat icon-white'></i> Obróć w prawo</a></li>
+                <li><a href="#" class='' id="rotateLeftBtn"><i class='icon-repeat icon-white'
+                                                               style="-webkit-transform:scaleX(-1); -moz-transform: scaleX(-1);-o-transform: scaleX(-1)"></i>
+                    Obróć w lewo</a></li>
+                <li><a href="#" class='' id="rotateRightBtn"><i class='icon-repeat icon-white'></i> Obróć w prawo</a>
+                </li>
                 <li><a href="#">Pokaż/ukryj siatkę <input type="checkbox" id="gridCheckbox" checked="checked"></a></li>
             </ul>
         </div>
@@ -125,12 +126,11 @@
 </body>
 
 
-
 <script type="text/javascript">
     var workflow = new logicjs.Workflow({
         container:'container',
-        width: 1500,
-        height: 1000});
+        width:1500,
+        height:1000});
     $(document).ready(function () {
         $('.Gate').draggable({
             helper:'clone',
@@ -147,34 +147,30 @@
                 var y = ui.offset.top - $(this).offset().top + $(this).scrollTop();
 
                 var gateType = ui.draggable.attr('gate');
-                console.log(gateType);
-
-                     workflow.addGate({x:x, y:y},gateType);
-
-
+                workflow.addGate({x:x, y:y}, gateType);
 
             }
         });
 
-        $('#removeSellectedBtn').click(function(){
+        $('#removeSellectedBtn').click(function () {
             workflow.deleteSelectedItems();
         });
 
-        $('#rotateLeftBtn').click(function(){
+        $('#rotateLeftBtn').click(function () {
             workflow.rotateLeftSelectedItems();
         });
 
-        $('#rotateRightBtn').click(function(){
+        $('#rotateRightBtn').click(function () {
             workflow.rotateRightSelectedItems();
         });
 
-        $('#gridCheckbox').change(function(){
-           if($(this).is(':checked')){
-               $('#container').css('backgroundImage', "url('img/grid_10.png')");
-           }
-           else{
-               $('#container').css('backgroundImage', '');
-           }
+        $('#gridCheckbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('#container').css('backgroundImage', "url('img/grid_10.png')");
+            }
+            else {
+                $('#container').css('backgroundImage', '');
+            }
         });
 
 

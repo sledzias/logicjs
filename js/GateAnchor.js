@@ -7,7 +7,6 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         this.shapeType = 'GateAnchor';
         this.getAttrs().connectors = [];
         this.on('mousedown',function(e){
-            console.log('anchor mousedown')
             e.cancelBubble = true;
             this.getStage().makeConnector(this);
 
@@ -44,12 +43,19 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
         }
     },
 
+    /**
+     * zwraca polaczenia polaczone z pinem
+     * @return {Array}
+     */
     getConnectors : function(){
         return this.getAttrs().connectors;
     },
 
+    /**
+     * Powiadamia polaczone polaczenia o zmianie pozycji na obszarze roboczym
+     * @param event_str
+     */
     notifyConnectors : function(event_str){
-       // console.log('anchor '+this._id + this.getConnectors());
         _.each(this.getConnectors(),function(connector){
                 connector.updatePosition(this.getAbsolutePosition());
                 if(event_str == 'dragend'){
@@ -58,6 +64,11 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
                 }
         },this);
     },
+
+    /**
+     *  dla pinu wejsciowego: powiadamia bramke o zmianie stanu logicznego
+     *  dla pinu wyjsciowego: powiadamia polaczone polaczenia o zmianie stanu logicznego
+     */
     triggerLogicState : function(){
         if(this.getName()=='input'){
             this.getParent().simulate('pinChanged');
@@ -67,16 +78,6 @@ logicjs.GateAnchor =  logicjs.Anchor.extend({
                anchorConnector.setLogicState(this.getLogicState());
             },this);
         }
-    },
-    calculateOutputs : function(){
-
-
-        _.each(this.getAnchors('outputs'), function(anchor){
-            anchor.setLogicState('undefined');
-        });
     }
-
-
-
 });
 

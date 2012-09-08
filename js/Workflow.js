@@ -1,8 +1,8 @@
-logicjs.Workflow =  Kinetic.Stage.extend({
-    init: function(config) {
+logicjs.Workflow = Kinetic.Stage.extend({
+    init:function (config) {
         this.setDefaultAttrs({
-                selectedItems : []
-               // container : $('#container')
+            selectedItems:[]
+            // container : $('#container')
         });
 
         this.oType = 'Workflow';
@@ -10,65 +10,68 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         this._super(config);
 
         this.add(new Kinetic.Layer({
-            id : 'mainLayer'
+            id:'mainLayer'
         }));
 
         this.add(new Kinetic.Layer({
-            id : 'topLayer'
+            id:'topLayer'
         }));
         this.add(new Kinetic.Layer({
-            id : 'connectorsLayer'
+            id:'connectorsLayer'
         }));
 
         this.get('#mainLayer')[0].add(new Kinetic.Rect({
-           x : 0,
-           y : 0,
-           width : this.getAttrs().width,
-           height : this.getAttrs().height,
-           fill : 'white',
-           alpha : 0
+            x:0,
+            y:0,
+            width:this.getAttrs().width,
+            height:this.getAttrs().height,
+            fill:'white',
+            alpha:0
 
         }));
 
-        this.on('click', function(){
+        this.on('click', function () {
             this.clearSelectedItems();
-            console.log('stage click');
         });
     },
 
-    addGate : function(coords,gate){
+    /**
+     * dodaje bramke do sceny
+     * @param coords pozycja na ktorej ma zostac umieszczona bramka
+     * @param gate nazwa bramki ktora ma powstac
+     */
+    addGate:function (coords, gate) {
         var and = new logicjs[gate](coords);
         var mainLayer = this.get('#mainLayer')[0];
         mainLayer.add(and);
 
         mainLayer.draw();
-
-
-
     },
 
-    makeConnector : function(anchor){
+
+    /**
+     * tworzy polaczenie miedzy bramkami
+     * @param anchor
+     */
+    makeConnector:function (anchor) {
         var connector = new logicjs.Connector({
-            points : [anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y,
-                      anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y],
-            stroke: "black",
-            strokeWidth: 2
+            points:[anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y,
+                anchor.getAbsolutePosition().x, anchor.getAbsolutePosition().y],
+            stroke:"black",
+            strokeWidth:2
         });
-      //  connector.connectTo([anchor]);
+
         this.get('#connectorsLayer')[0].add(connector);
         connector._getAnchors()[0]._initDrag();
         connector._getAnchors()[1].connectTo(anchor);
         this.draw();
-
-
     },
+
     /**
-     * serialize stage and children as a JSON object and return
-     *  the result as a json string
-     * @name toJSON
-     * @methodOf Kinetic.Stage.prototype
+     * Serializuje scene do formatu json
+     *   @name toJSON
      */
-    toJSON: function() {
+    toJSON:function () {
         var type = Kinetic.Type;
 
         function addNode(node) {
@@ -76,10 +79,10 @@ logicjs.Workflow =  Kinetic.Stage.extend({
 
             obj.attrs = {};
 
-            // serialize only attributes that are not function, image, DOM, or objects with methods
-            for(var key in node.attrs) {
+
+            for (var key in node.attrs) {
                 var val = node.attrs[key];
-                if(!type._isFunction(val) && !type._isElement(val) && !type._hasMethods(val)) {
+                if (!type._isFunction(val) && !type._isElement(val) && !type._hasMethods(val)) {
                     obj.attrs[key] = val;
                 }
             }
@@ -87,12 +90,12 @@ logicjs.Workflow =  Kinetic.Stage.extend({
             obj.nodeType = node.nodeType;
             obj.shapeType = node.shapeType;
 
-            if(node.nodeType !== 'Shape') {
+            if (node.nodeType !== 'Shape') {
 
                 obj.children = [];
 
                 var children = node.getChildren();
-                for(var n = 0; n < children.length; n++) {
+                for (var n = 0; n < children.length; n++) {
                     var child = children[n];
                     obj.children.push(addNode(child));
                 }
@@ -100,33 +103,29 @@ logicjs.Workflow =  Kinetic.Stage.extend({
 
             return obj;
         }
+
         return JSON.stringify(addNode(this));
     },
     /**
-     * load stage with JSON string.  De-serializtion does not generate custom
-     *  shape drawing functions, images, or event handlers (this would make the
-     * 	serialized object huge).  If your app uses custom shapes, images, and
-     *  event handlers (it probably does), then you need to select the appropriate
-     *  shapes after loading the stage and set these properties via on(), setDrawFunc(),
-     *  and setImage()
+     * wczytuje dane z fomratu json i tworzy scene
      * @name load
      * @methodOf Kinetic.Stage.prototype
      * @param {String} JSON string
      */
-    load: function(json) {
+    load:function (json) {
         this.reset();
 
         function loadNode(node, obj) {
             var children = obj.children;
-            if(children !== undefined) {
-                for(var n = 0; n < children.length; n++) {
+            if (children !== undefined) {
+                for (var n = 0; n < children.length; n++) {
                     var child = children[n];
                     var type;
 
                     // determine type
-                    if(child.nodeType === 'Shape') {
+                    if (child.nodeType === 'Shape') {
                         // add custom shape
-                        if(child.shapeType === undefined) {
+                        if (child.shapeType === undefined) {
                             type = 'Shape';
                         }
                         // add standard shape
@@ -137,35 +136,30 @@ logicjs.Workflow =  Kinetic.Stage.extend({
                     else {
                         type = child.nodeType;
                     }
-                    try{
+                    try {
                         var no = new Kinetic[type](child.attrs);
 
                     }
-                   catch(e){
-                        console.log(type);
+                    catch (e) {
+                        if (type == 'Gate') {
+                            type = child.shapeType;
+                            child.children = [];
+                        }
+                        var no = new logicjs[type](child.attrs);
 
-                       if (type == 'Gate') {
-                           type = child.shapeType;
-                           child.children=[];
-                       }
-                           var no = new logicjs[type](child.attrs);
+                        if (child.nodeType == 'Connector') {
 
-                       if (child.nodeType == 'Connector'){
+                            no.removeChildren();
 
-                           no.removeChildren();
-
-                       }
-
-
-
-
-                   }
+                        }
+                    }
                     node.add(no);
                     loadNode(no, child);
 
                 }
             }
         }
+
         var obj = JSON.parse(json);
 
         // copy over stage properties
@@ -174,61 +168,103 @@ logicjs.Workflow =  Kinetic.Stage.extend({
         loadNode(this, obj);
 
         this.draw();
-        _.each(this.get('.connectorAnchor'),function(anchor){
+        _.each(this.get('.connectorAnchor'), function (anchor) {
             anchor.connectToHoverAnchor();
+        });
+        _.each(this.get('.switch-button'), function (anchor) {
+            anchor.simulate('click');
         });
     },
 
-    removeSelectedItem: function(item){
-        this.getAttrs().selectedItems= _.without(this.getSelectedItems(), item);
+    /**
+     * usuwa zaznaczenie ze wskazanego obiektu
+     * @param item
+     */
+    removeSelectedItem:function (item) {
+        this.getAttrs().selectedItems = _.without(this.getSelectedItems(), item);
 
     },
 
-    addSelectedItem : function(item){
-        if(_.indexOf(this.getSelectedItems(),item) == -1){
+    /**
+     * Dodaje zaznaczenie do wskazanego obiektu
+     * @param item
+     */
+    addSelectedItem:function (item) {
+        if (_.indexOf(this.getSelectedItems(), item) == -1) {
             this.getSelectedItems().push(item);
-        };
+        }
+        ;
     },
-    getSelectedItems : function(){
+
+    /**
+     * zwraca zaznaczone obiektu
+     * @return {Array}
+     */
+    getSelectedItems:function () {
         return this.getAttrs().selectedItems;
     },
 
-    isSelectedItem : function(item){
-        return _.indexOf(this.getSelectedItems(),item) > -1;
-    },
-    toggleSelectedItem : function(item){
-       this.isSelectedItem(item) ? this.removeSelectedItem(item) : this.addSelectedItem(item);
-       return this.isSelectedItem(item);
+    /**
+     * funkcja sprawdza, czy obiekt jest zaznaczony
+     * @param item
+     * @return {Boolean}
+     */
+    isSelectedItem:function (item) {
+        return _.indexOf(this.getSelectedItems(), item) > -1;
     },
 
-    deleteSelectedItems : function(){
-        _.each(this.getSelectedItems(),function(item){
+    /**
+     * Odwraca zaznaczneie obiektu
+     * @param item
+     * @return {Boolean}
+     */
+    toggleSelectedItem:function (item) {
+        this.isSelectedItem(item) ? this.removeSelectedItem(item) : this.addSelectedItem(item);
+        return this.isSelectedItem(item);
+    },
+
+    /**
+     * usuwa zaznaczone obiekty
+     */
+    deleteSelectedItems:function () {
+        _.each(this.getSelectedItems(), function (item) {
             this.removeSelectedItem(item);
             item.eliminate();
-        },this);
+        }, this);
         this.draw();
 
 
     },
-    clearSelectedItems : function(){
-        _.each(this.getSelectedItems(), function(item){
-           item.clearSelection();
-           this.removeSelectedItem(item);
-        },this);
+
+    /**
+     * usuwa zaznaczenie ze wszystkich obiektow
+     */
+    clearSelectedItems:function () {
+        _.each(this.getSelectedItems(), function (item) {
+            item.clearSelection();
+            this.removeSelectedItem(item);
+        }, this);
         this.draw();
     },
-    rotateLeftSelectedItems : function(){
-        _.each(this.getSelectedItems(),function(item){
-            if(item.oType != 'Connector'){
+
+    /**
+     * obraca lewoskretnie zaznaczone obiekty
+     */
+    rotateLeftSelectedItems:function () {
+        _.each(this.getSelectedItems(), function (item) {
+            if (item.oType != 'Connector') {
                 item.setRotationDeg(item.getRotationDeg() - 90);
             }
         });
 
     },
 
-    rotateRightSelectedItems : function(){
-        _.each(this.getSelectedItems(),function(item){
-            if(item.oType != 'Connector'){
+    /**
+     * obraca prawoskretnie zaznaczone obiekty
+     */
+    rotateRightSelectedItems:function () {
+        _.each(this.getSelectedItems(), function (item) {
+            if (item.oType != 'Connector') {
                 item.setRotationDeg(item.getRotationDeg() + 90);
             }
         });

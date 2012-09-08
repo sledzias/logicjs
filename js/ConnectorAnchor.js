@@ -8,8 +8,6 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         });
         this.on('dragstart',function(){
             this.getParent().moveToTop();
-            console.log('connector anchor dragstart');
-
         });
         this.on('dragmove',function(e){
             var anchors = this.getDroppedAnchors(e);
@@ -66,6 +64,10 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
 
     },
 
+    /**
+     * tworzy polaczenie z pinem bramki
+     * @param anchor
+     */
     connectTo : function(anchor){
         if (this.getConnectedAnchor() != null){
             this.disconnectFrom();
@@ -77,6 +79,9 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         if (_.isObject(this.getParent()))  this.getParent().simulate('pinChange');
     },
 
+    /**
+     * zrywa polaczenie z pinem bramki
+     */
     disconnectFrom : function(){
         if(this.getConnectedAnchor()!= null){
             this.getConnectedAnchor().disconnectFrom(this);
@@ -85,7 +90,7 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
     },
 
     /**
-     * funcka zwraca obiekt pinu, z ktorym jest polaczony lub null, jezeli nie ma takiego polaczenia
+     * funkcja zwraca obiekt pinu, z ktorym jest polaczony lub null, jezeli nie ma takiego polaczenia
      * @return {*}
      */
     getConnectedAnchor : function(){
@@ -104,10 +109,17 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         return old;
 
     },
+
+    /**
+     * funckja usuwa polaczenie do ktorego nalezy pin
+     */
     eliminate : function(){
         this.getParent().eliminate();
     },
 
+    /**
+     * tworzy polaczenie z pinem bramki, ktory znajduje sie pod pinem polaczenia
+     */
     connectToHoverAnchor : function(){
         var anchors = this.getDroppedAnchors({layerX : this.getAbsolutePosition().x, layerY : this.getAbsolutePosition().y});
         if (anchors.length > 0){
@@ -117,6 +129,9 @@ logicjs.ConnectorAnchor =  logicjs.Anchor.extend({
         this.getLayer().draw();
     },
 
+    /**
+     * informuje polaczenie lub bramke o zmianie stanu logicznego
+     */
     triggerLogicState : function(){
        if(this.isConnectedTo('output')){
             this.getParent().simulate('pinChanged');

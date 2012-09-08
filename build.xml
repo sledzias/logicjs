@@ -71,7 +71,7 @@
             <fileset
                     dir="${src.js.dir}"
                     includes="*.js"
-                    excludes="Logic.js, Gate.js, Anchor.js, basic.js"/>
+                    excludes="Logic.js, Gate.js, Anchor.js"/>
         </concat>
         <echo>Finished</echo>
     </target>
